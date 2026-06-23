@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>materiais.alumma · Portfólio Imobiliário</title>
-<meta name="description" content="Ferramenta de apresentação de produtos imobiliários para corretores.">
+<title>Nox Imóveis · Portfólio Imobiliário</title>
+<meta name="description" content="Nox Imóveis — ferramenta de apresentação de produtos imobiliários para corretores.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
   --bg:#0a1622; --bg2:#0c1a2b; --bg3:#0e1f33; --bg4:#10243a; --panel:#16283f;
   --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
   --txt:#e8eef6; --txt2:#cdd9e6; --txt3:#9fb4cc; --txt4:#7e95ad; --txt5:#5d7790;
-  --accent:#4a9eff; --ok:#5dcaa5; --warn:#e0a23a; --danger:#f0716b;
+  --accent:#9a6cf0; --ok:#5dcaa5; --warn:#e0a23a; --danger:#f0716b;
   --SANTER:#4a9eff; --ROTTAS:#f0997b; --STEIN:#b39af0; --TORRES:#5dcaa5;
   --radius:14px;
 }
@@ -40,28 +40,28 @@ input,select,textarea{font-family:inherit}
   border-bottom:1px solid var(--line);background:rgba(8,18,30,.6);backdrop-filter:blur(8px);flex:none;
 }
 .brand{display:flex;align-items:center;gap:11px;min-width:0}
-.brand .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#4a9eff,#7a6cf0);
-  display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 6px 18px rgba(74,158,255,.35)}
+.brand .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#a78bfa,#7c3aed);
+  display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 6px 18px rgba(124,58,237,.4)}
 .brand .logo i{font-size:19px;color:#fff}
 .brand h1{font-size:15px;font-weight:600;margin:0;letter-spacing:.2px;white-space:nowrap}
 .brand h1 b{color:var(--accent);font-weight:700}
 .brand .sub{font-size:10px;color:var(--txt5);letter-spacing:1.5px;margin-top:1px}
 #topbar .spacer{flex:1}
-.cloud-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--txt4);
-  padding:6px 11px;border:1px solid var(--line);border-radius:20px;white-space:nowrap}
-.cloud-tag i{font-size:14px}
-.cloud-tag.on{color:var(--ok);border-color:rgba(93,202,165,.35)}
 .icon-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);
   display:flex;align-items:center;justify-content:center;color:var(--txt3);transition:.15s;flex:none}
 .icon-btn:hover{background:var(--bg4);color:var(--txt);border-color:var(--line2)}
 .icon-btn i{font-size:19px}
 
-#app{flex:1;display:flex;min-height:0}
-#sideToggle{display:none}
+#app{flex:1;display:flex;min-height:0;position:relative}
+#sideToggle{display:flex}
 
-/* ---------- Sidebar ---------- */
-#side{width:280px;flex:none;background:var(--bg2);border-right:1px solid var(--line);
-  overflow-y:auto;display:flex;flex-direction:column}
+/* ---------- Sidebar (sempre como gaveta / hambúrguer) ---------- */
+#side{position:fixed;top:57px;left:0;bottom:0;width:300px;max-width:86vw;z-index:120;
+  background:var(--bg2);border-right:1px solid var(--line);overflow-y:auto;display:flex;flex-direction:column;
+  transform:translateX(-100%);transition:transform .25s;box-shadow:8px 0 50px rgba(0,0,0,.5)}
+#side.open{transform:none}
+#scrim{position:fixed;top:57px;left:0;right:0;bottom:0;background:rgba(0,0,0,.45);z-index:115;display:none}
+#scrim.show{display:block}
 .side-head{padding:16px 16px 10px}
 .search{display:flex;align-items:center;gap:8px;background:var(--bg4);border:1px solid var(--line);
   border-radius:10px;padding:8px 11px;margin-bottom:12px}
@@ -102,10 +102,6 @@ input,select,textarea{font-family:inherit}
   background:radial-gradient(120% 120% at 70% 0%,color-mix(in srgb,var(--brand,#4a9eff) 18%,transparent),transparent 60%)}
 .hero .heroph i{font-size:62px;color:rgba(255,255,255,.12)}
 .hero .grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,16,28,.05) 0%,rgba(8,16,28,.35) 45%,rgba(8,16,28,.92) 100%),linear-gradient(90deg,rgba(8,16,28,.55),transparent 55%)}
-.hero .price{position:absolute;top:16px;right:24px;text-align:right;z-index:2}
-.hero .price .lab{font-size:9px;letter-spacing:1px;color:var(--txt3);margin:0}
-.hero .price .v{font-size:22px;font-weight:600;color:#fff;margin:1px 0 0}
-.hero .price .pm{font-size:10px;margin:2px 0 0}
 .hero .info{position:relative;z-index:2}
 .badge{display:inline-block;font-size:9px;letter-spacing:1px;color:#0a1622;padding:3px 10px;border-radius:6px;margin-bottom:8px;font-weight:600}
 .hero .co{font-size:11px;letter-spacing:1.5px;margin:0;font-weight:600}
@@ -122,8 +118,7 @@ input,select,textarea{font-family:inherit}
 .stat .l{font-size:9px;letter-spacing:1px;color:var(--txt4);margin:3px 0 0}
 
 .body{padding:18px 26px 40px}
-.pills-bar{display:flex;align-items:center;gap:12px;margin-bottom:22px}
-.pills{display:flex;flex-wrap:wrap;gap:8px;flex:1}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
 .pill{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:22px;
   background:var(--bg4);border:1px solid var(--line);transition:.16s;font-size:12.5px;color:var(--txt);position:relative}
 .pill:hover{border-color:var(--line2);transform:translateY(-1px)}
@@ -132,11 +127,6 @@ input,select,textarea{font-family:inherit}
 .pill .dot{position:absolute;top:-3px;right:-3px;min-width:16px;height:16px;padding:0 3px;border-radius:8px;
   background:var(--brand,var(--accent));color:#0a1622;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg)}
 .pill.on .dot{background:#0a1622;color:var(--brand,var(--accent));border-color:var(--brand,var(--accent))}
-.present-btn{flex:none;display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:22px;
-  font-size:12.5px;font-weight:600;color:#fff;background:linear-gradient(135deg,#4a9eff,#7a6cf0);
-  box-shadow:0 8px 22px rgba(74,158,255,.3);transition:.16s}
-.present-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
-.present-btn i{font-size:16px}
 
 /* content blocks */
 .lead{font-size:13.5px;line-height:1.7;color:var(--txt2);margin:0 0 20px;white-space:pre-wrap}
@@ -278,29 +268,37 @@ input,select,textarea{font-family:inherit}
 .list-editor .le-row{display:flex;gap:8px;margin-bottom:8px}
 .list-editor .le-row input{flex:1}
 
+.con-list{display:flex;flex-direction:column;gap:9px}
+.con-row{display:flex;align-items:center;gap:10px;padding:9px 11px;background:var(--bg3);border:1px solid var(--line);border-radius:11px}
+.con-row input[type=color]{width:40px;height:34px;flex:none;padding:0;border:1px solid var(--line);border-radius:8px;background:var(--bg4);cursor:pointer}
+.con-row input[type=color]::-webkit-color-swatch-wrapper{padding:3px}
+.con-row input[type=color]::-webkit-color-swatch{border:none;border-radius:5px}
+.con-row input[data-con-name]{flex:1;background:var(--bg4);border:1px solid var(--line);border-radius:8px;padding:9px 11px;color:var(--txt);font-size:13px;outline:none}
+.con-row input[data-con-name]:focus{border-color:var(--accent)}
+.con-used{font-size:10.5px;color:var(--txt4);white-space:nowrap}
+
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;
   background:var(--bg4);border:1px solid var(--line2);color:var(--txt);padding:12px 20px;border-radius:12px;
   font-size:13px;z-index:300;transition:.25s;display:flex;align-items:center;gap:9px;box-shadow:0 16px 40px rgba(0,0,0,.4)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast i{font-size:17px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ti-loader-2{display:inline-block;animation:spin .9s linear infinite}
 
-.config-note{background:rgba(74,158,255,.08);border:1px solid rgba(74,158,255,.25);border-radius:12px;
+.config-note{background:rgba(154,108,240,.10);border:1px solid rgba(154,108,240,.28);border-radius:12px;
   padding:14px 16px;font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:18px}
 .config-note b{color:var(--accent)}
 .config-note code{background:rgba(0,0,0,.3);padding:1px 6px;border-radius:5px;font-size:11px}
 
 /* responsive */
 @media(max-width:820px){
-  #side{position:fixed;top:0;left:0;bottom:0;z-index:120;transform:translateX(-100%);transition:.25s;box-shadow:0 0 60px rgba(0,0,0,.6)}
-  #side.open{transform:none}
-  #sideToggle{display:flex}
+  #side{top:0;width:280px}
+  #scrim{top:0}
   .form-grid{grid-template-columns:1fr}
   .add-mat{grid-template-columns:1fr 1fr}
   .gallery{grid-template-columns:repeat(2,1fr)}
   .body{padding:16px}
   .hero{padding:16px}
-  #scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:115;display:none}
-  #scrim.show{display:block}
 }
 </style>
 </head>
@@ -311,12 +309,11 @@ input,select,textarea{font-family:inherit}
     <div class="brand">
       <div class="logo"><i class="ti ti-building-skyscraper"></i></div>
       <div>
-        <h1>materiais<b>.alumma</b></h1>
+        <h1><b>Nox</b> Imóveis</h1>
         <div class="sub">PORTFÓLIO IMOBILIÁRIO</div>
       </div>
     </div>
     <div class="spacer"></div>
-    <span id="cloudTag" class="cloud-tag"><i class="ti ti-database"></i><span id="cloudTxt">Local</span></span>
     <button id="adminBtn" class="icon-btn" title="Administrador" aria-label="Administrador"><i class="ti ti-lock"></i></button>
   </header>
 
@@ -368,7 +365,16 @@ const ADMIN_PASS = "nox2025";
 
 const BRANDS = ["SANTER","ROTTAS","STEIN","TORRES"];
 const BRAND_COLOR = {SANTER:"#4a9eff",ROTTAS:"#f0997b",STEIN:"#b39af0",TORRES:"#5dcaa5"};
-const brandColor = c => BRAND_COLOR[c] || "#7a9ccf";
+const SEED_CON = [
+  {name:"SANTER",color:"#4a9eff",ordem:0},
+  {name:"ROTTAS",color:"#f0997b",ordem:1},
+  {name:"STEIN", color:"#b39af0",ordem:2},
+  {name:"TORRES",color:"#5dcaa5",ordem:3},
+];
+const brandColor = c => {
+  const f = st && st.construtoras && st.construtoras.find(x=>x.name===c);
+  return f ? f.color : (BRAND_COLOR[c] || "#9a6cf0");
+};
 const stColor = s => s==="Em construção" ? "#e0a23a" : s==="Lançamento" ? "#4a9eff" : "#5dcaa5";
 
 const CATEGORIES = [
@@ -395,6 +401,13 @@ function toCdn(url){
   // raw.githubusercontent.com/user/repo/branch/path
   m = url.match(/^https?:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)\/(.+)$/i);
   if(m) return `https://cdn.jsdelivr.net/gh/${m[1]}/${m[2]}@${m[3]}/${m[4]}`;
+  // Dropbox -> host de conteúdo bruto (abre embutido E baixa, com CORS)
+  if(/^https?:\/\/(www\.)?dropbox\.com\//i.test(url)){
+    return url.replace(/^https?:\/\/(www\.)?dropbox\.com\//i, "https://dl.dropboxusercontent.com/");
+  }
+  // Google Drive -> link de download direto
+  m = url.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]+)/i);
+  if(m) return `https://drive.google.com/uc?export=download&id=${m[1]}`;
   return url;
 }
 
@@ -404,6 +417,8 @@ function toCdn(url){
 const Store = (function(){
   const LS_KEY = "alumma.products.v3";
   let useFb = false, db = null, ready = false;
+  let _seq = 0;
+  function uid(prefix){ return prefix + Date.now().toString(36) + "_" + (_seq++).toString(36); }
 
   function hasConfig(){ return FIREBASE_CONFIG && FIREBASE_CONFIG.projectId; }
 
@@ -462,7 +477,7 @@ const Store = (function(){
     }
     const arr = lsGet();
     if(item.id){ const i=arr.findIndex(x=>x.id===item.id); if(i>=0) arr[i]=item; else arr.push(item); }
-    else { item.id = "loc_"+Date.now()+"_"+Math.floor(performance.now()*1000%100000); arr.push(item); }
+    else { item.id = uid("loc_"); arr.push(item); }
     lsSet(arr); return item.id;
   }
   async function remove(id){
@@ -475,7 +490,37 @@ const Store = (function(){
     for(const item of seed){ await save(item); }
     return getAll();
   }
-  return {init, getAll, save, remove, seedIfEmpty, get useFb(){return useFb;}, hasConfig};
+
+  // ----- Construtoras (mesma lógica: memória + persistência best-effort) -----
+  const CON_KEY = "nox.construtoras.v1";
+  let conMem = null;
+  function conGet(){
+    if(conMem===null){ try{ conMem = JSON.parse(localStorage.getItem(CON_KEY)||"[]"); }catch(e){ conMem=[]; } if(!Array.isArray(conMem)) conMem=[]; }
+    return conMem;
+  }
+  function conSet(arr){ conMem=arr; try{ localStorage.setItem(CON_KEY, JSON.stringify(arr)); }catch(e){ console.warn("localStorage indisponível (construtoras).", e); } }
+  async function getCon(){
+    if(useFb){ const s=await db.collection("construtoras").orderBy("ordem","asc").get(); return s.docs.map(d=>({id:d.id, ...d.data()})); }
+    return conGet().slice().sort((a,b)=>(a.ordem||0)-(b.ordem||0));
+  }
+  async function saveCon(item){
+    if(useFb){ const id=item.id || db.collection("construtoras").doc().id; const data={...item}; delete data.id; await db.collection("construtoras").doc(id).set(data,{merge:true}); return id; }
+    const arr=conGet();
+    if(item.id){ const i=arr.findIndex(x=>x.id===item.id); if(i>=0) arr[i]=item; else arr.push(item); }
+    else { item.id=uid("con_"); arr.push(item); }
+    conSet(arr); return item.id;
+  }
+  async function removeCon(id){
+    if(useFb){ await db.collection("construtoras").doc(id).delete(); return; }
+    conSet(conGet().filter(x=>x.id!==id));
+  }
+  async function seedConIfEmpty(seed){
+    const all=await getCon(); if(all.length) return all;
+    for(const item of seed){ await saveCon(item); }
+    return getCon();
+  }
+
+  return {init, getAll, save, remove, seedIfEmpty, getCon, saveCon, removeCon, seedConIfEmpty, get useFb(){return useFb;}, hasConfig};
 })();
 
 /* ============================================================
@@ -522,7 +567,7 @@ const SEED = [
 /* ============================================================
    STATE + DOM
    ============================================================ */
-const st = { items:[], i:0, filter:"TODOS", q:"", tab:"resumo", isAdmin:false, lb:{list:[],idx:0} };
+const st = { items:[], construtoras:[], i:0, filter:"TODOS", q:"", tab:"resumo", isAdmin:false, lb:{list:[],idx:0} };
 const $ = s => document.querySelector(s);
 const side = $("#side"), main = $("#main");
 const esc = s => String(s==null?"":s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
@@ -532,6 +577,9 @@ function toast(msg, icon="ti-check"){
   const t=$("#toast"); t.innerHTML=`<i class="ti ${icon}"></i>${esc(msg)}`; t.classList.add("show");
   clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),2600);
 }
+
+function toastHold(msg, icon="ti-loader-2"){ const t=$("#toast"); t.innerHTML=`<i class="ti ${icon}"></i>${esc(msg)}`; t.classList.add("show"); clearTimeout(t._t); }
+function hideToast(){ const t=$("#toast"); clearTimeout(t._t); t.classList.remove("show"); }
 
 function copyText(text){
   const done=()=>toast("Link copiado — cole no WhatsApp","ti-copy");
@@ -550,22 +598,28 @@ function fileNameFromUrl(url){
   try{ const u=new URL(url); const n=decodeURIComponent(u.pathname.split("/").pop()||""); return n||"arquivo"; }
   catch(e){ return "arquivo"; }
 }
-// Encaminhar: no celular tenta enviar o ARQUIVO (foto/pdf) pro WhatsApp; senão manda o LINK
+// Encaminhar: no celular tenta enviar o ARQUIVO de verdade pro WhatsApp; senão manda o LINK
 async function doShare(url, text, asFile){
-  if(asFile && navigator.canShare){
-    try{
-      const r=await fetch(url);
-      if(r.ok){
-        const b=await r.blob();
-        const f=new File([b], fileNameFromUrl(url), {type:b.type||"application/octet-stream"});
-        if(navigator.canShare({files:[f]})){ await navigator.share({files:[f], text}); return; }
-      }
-    }catch(e){ /* cai pro link */ }
+  if(asFile){
+    if(navigator.canShare){
+      try{
+        toastHold("Preparando arquivo para o WhatsApp… aguarde");
+        const r=await fetch(url);
+        if(r.ok){
+          const b=await r.blob();
+          const f=new File([b], fileNameFromUrl(url), {type:b.type||"application/octet-stream"});
+          if(navigator.canShare({files:[f]})){ hideToast(); await navigator.share({files:[f], text}); return; }
+        }
+      }catch(e){ /* CORS/erro → cai pro link */ }
+      hideToast();
+    }
+    toast("Para enviar o arquivo, use pelo celular. No PC vai o link.","ti-device-mobile");
   }
   window.open(waLink(text),"_blank");
 }
 function waBtn(url, text, asFile){
-  return `<button class="tbtn wa" data-su="${esc(url)}" data-st="${esc(text)}" data-sf="${asFile?1:0}"><i class="ti ti-brand-whatsapp"></i> WhatsApp</button>`;
+  const tip = asFile ? "Encaminhar o arquivo pelo WhatsApp (pelo celular)" : "Encaminhar o link pelo WhatsApp";
+  return `<button class="tbtn wa" title="${esc(tip)}" data-su="${esc(url)}" data-st="${esc(text)}" data-sf="${asFile?1:0}"><i class="ti ti-brand-whatsapp"></i> Encaminhar</button>`;
 }
 
 /* materials helpers */
@@ -598,7 +652,7 @@ function visibleItems(){
 }
 
 function renderSide(){
-  const brands = ["TODOS", ...Array.from(new Set([...BRANDS, ...st.items.map(p=>p.co)]))];
+  const brands = ["TODOS", ...Array.from(new Set([...st.construtoras.map(c=>c.name), ...st.items.map(p=>p.co)]))];
   const chips = brands.map(c=>{
     const on=st.filter===c, col=c==="TODOS"?"#9fb4cc":brandColor(c);
     return `<span class="chip" data-f="${esc(c)}" style="border-color:${on?col:"var(--line2)"};color:${on?"#0a1622":col};background:${on?col:"transparent"};">${esc(c)}</span>`;
@@ -612,19 +666,23 @@ function renderSide(){
       <div class="meta">
         <p class="nm">${esc(p.n)}</p>
         <p class="ci">${esc(p.cid)}</p>
-        <p class="pr" style="color:${stColor(p.st)}">${(p.pr&&p.pr.trim())?"R$ "+esc(p.pr):"Sob consulta"}</p>
+        <p class="pr" style="color:${stColor(p.st)}">${esc(p.st||"")}</p>
       </div></div>`;
   }).join("") : `<div class="empty-side"><i class="ti ti-search-off" style="font-size:30px;opacity:.5"></i><p>Nenhum imóvel encontrado.</p></div>`;
 
   side.innerHTML = `
     <div class="side-head">
-      <p style="font-size:9px;letter-spacing:1.5px;color:var(--txt5);margin:0 0 10px">LITORAL CATARINENSE · 2026</p>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <p style="font-size:9px;letter-spacing:1.5px;color:var(--txt5);margin:0">LITORAL CATARINENSE · 2026</p>
+        <button class="icon-btn" id="sideClose" title="Fechar" aria-label="Fechar menu" style="width:30px;height:30px"><i class="ti ti-x" style="font-size:17px"></i></button>
+      </div>
       <div class="search"><i class="ti ti-search"></i><input id="searchInp" placeholder="Buscar imóvel..." value="${esc(st.q)}"></div>
       <div class="chips">${chips}</div>
     </div>
     <p class="count">${items.length} ${items.length===1?"IMÓVEL":"IMÓVEIS"}</p>
     <div class="rows">${rows}</div>`;
 
+  const scl=$("#sideClose"); if(scl) scl.addEventListener("click",closeSide);
   const sInp=$("#searchInp");
   sInp.addEventListener("input",()=>{ st.q=sInp.value; const pos=sInp.selectionStart; renderSide(); const n=$("#searchInp"); n.focus(); try{n.setSelectionRange(pos,pos);}catch(e){} });
   side.querySelectorAll("[data-f]").forEach(el=>el.addEventListener("click",()=>{ st.filter=el.getAttribute("data-f"); renderSide(); }));
@@ -697,20 +755,21 @@ function renderViewer(p){
   if(cat.kind==="video"){
     const m=mats[0], url=toCdn(m.url);
     const yt=ytId(m.url);
-    // mp4 baixa direto; YouTube só baixa se houver um link de download (.mp4) configurado
-    const dl = m.dl && m.dl.trim() ? toCdn(m.dl) : (yt ? null : url);
-    const dlBtn = dl ? downloadBtn(dl,"vídeo") : "";
+    // arquivo baixável: o link de download (.mp4) ou o próprio mp4
+    const fileUrl = m.dl && m.dl.trim() ? toCdn(m.dl) : (yt ? null : url);
+    const dlBtn = fileUrl ? downloadBtn(fileUrl,"vídeo") : "";
+    // Encaminhar: se há arquivo, manda o ARQUIVO; senão (só YouTube) manda o link do vídeo
+    const fwdBtn = fileUrl
+      ? waBtn(fileUrl, `${p.n} — ${m.name||cat.tab}`, true)
+      : waBtn("https://youtu.be/"+yt, `${p.n} — ${m.name||cat.tab}\nhttps://youtu.be/${yt}`, false);
     if(yt){
-      const shareUrl = "https://youtu.be/"+yt;
-      const text=`${p.n} — ${m.name||cat.tab}\n${shareUrl}`;
-      return `<div class="mat-toolbar"><span class="name">${esc(m.name||cat.tab)}</span>${waBtn(shareUrl,text,false)}${dlBtn}
-        <a class="tbtn" href="${shareUrl}" target="_blank" rel="noopener"><i class="ti ti-external-link"></i> abrir em tela cheia</a></div>
+      return `<div class="mat-toolbar"><span class="name">${esc(m.name||cat.tab)}</span>${fwdBtn}${dlBtn}
+        <a class="tbtn" href="https://youtu.be/${yt}" target="_blank" rel="noopener"><i class="ti ti-external-link"></i> tela cheia</a></div>
         <div class="media-frame"><iframe style="height:62vh" src="https://www.youtube-nocookie.com/embed/${yt}?rel=0&modestbranding=1&playsinline=1&color=white&iv_load_policy=3" allow="autoplay; fullscreen; encrypted-media" allowfullscreen title="Vídeo"></iframe></div>`;
     }
-    const vtext=`${p.n} — ${m.name||cat.tab}\n${dl||url}`;
     let extra="";
     if(mats.length>1) extra=`<div class="gallery" style="margin-top:12px">`+mats.slice(1).map((x,k)=>`<div class="gcell" data-vid="${esc(toCdn(x.url))}"><video src="${esc(toCdn(x.url))}#t=0.5" muted preload="metadata" style="width:100%;height:100%;object-fit:cover"></video></div>`).join("")+`</div>`;
-    return `<div class="mat-toolbar"><span class="name">${esc(m.name||cat.tab)}</span>${waBtn(dl||url,vtext,false)}${dlBtn}</div>
+    return `<div class="mat-toolbar"><span class="name">${esc(m.name||cat.tab)}</span>${fwdBtn}${dlBtn}</div>
       <div class="media-frame"><video src="${esc(url)}" controls playsinline preload="metadata"></video></div>${extra}`;
   }
   // IMAGES / PLANTAS
@@ -777,9 +836,6 @@ function renderMain(){
     <div class="hero">
       ${hero?`<div class="heroimg" style="background-image:url('${esc(hero)}')"></div><div class="grad"></div>`
             :`<div class="heroph"><i class="ti ti-building-skyscraper"></i></div>`}
-      <div class="price">${(p.pr&&p.pr.trim())
-        ? `<p class="lab">A PARTIR DE</p><p class="v">R$ ${esc(p.pr)}</p>${(p.m2&&p.m2.trim())?`<p class="pm" style="color:${col}">R$ ${esc(p.m2)}/m²</p>`:""}`
-        : `<p class="v" style="font-size:15px;font-weight:500">Valores sob consulta</p>`}</div>
       <div class="info">
         <span class="badge" style="background:${stColor(p.st)}">${esc((p.st||"").toUpperCase())}</span>
         <p class="co" style="color:${col}">${esc(p.co)}</p>
@@ -874,7 +930,7 @@ $("#adminBtn").addEventListener("click",()=>{ st.isAdmin?openAdminList():openLog
 function openLogin(){
   modal.classList.add("login-box");
   modal.innerHTML=`
-    <div class="modal-head"><div class="logo" style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#4a9eff,#7a6cf0);display:flex;align-items:center;justify-content:center"><i class="ti ti-lock" style="color:#fff;font-size:18px"></i></div>
+    <div class="modal-head"><div class="logo" style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#a78bfa,#7c3aed);display:flex;align-items:center;justify-content:center"><i class="ti ti-lock" style="color:#fff;font-size:18px"></i></div>
       <div><p class="ttl">Administrador</p><p class="sub">Acesso restrito · NOX</p></div>
       <div class="spacer"></div><button class="icon-btn" data-close><i class="ti ti-x"></i></button></div>
     <div class="modal-body">
@@ -913,13 +969,14 @@ function openAdminList(){
     : `Rodando em <b>modo local</b> (salva neste navegador). Para compartilhar com os corretores, cole a config do Firebase em <code>FIREBASE_CONFIG</code> no topo do arquivo.`;
 
   modal.innerHTML=`
-    <div class="modal-head"><div class="logo" style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#4a9eff,#7a6cf0);display:flex;align-items:center;justify-content:center"><i class="ti ti-settings" style="color:#fff;font-size:18px"></i></div>
-      <div><p class="ttl">Painel do Administrador</p><p class="sub">${st.items.length} imóveis cadastrados</p></div>
+    <div class="modal-head"><div class="logo" style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#a78bfa,#7c3aed);display:flex;align-items:center;justify-content:center"><i class="ti ti-settings" style="color:#fff;font-size:18px"></i></div>
+      <div><p class="ttl">Painel do Administrador</p><p class="sub">${st.items.length} imóveis · ${st.construtoras.length} construtoras</p></div>
       <div class="spacer"></div><button class="icon-btn" data-close><i class="ti ti-x"></i></button></div>
     <div class="modal-body">
       <div class="config-note">${cloudInfo}</div>
       <div class="admin-bar">
         <button class="btn-primary" id="newProd"><i class="ti ti-plus"></i> Novo imóvel</button>
+        <button class="btn-ghost" id="conBtn"><i class="ti ti-building-community"></i> Construtoras</button>
         <button class="btn-ghost" id="exportBtn"><i class="ti ti-download"></i> Exportar JSON</button>
         <button class="btn-ghost" id="importBtn"><i class="ti ti-upload"></i> Importar JSON</button>
         <input type="file" id="importFile" accept="application/json" style="display:none">
@@ -929,6 +986,7 @@ function openAdminList(){
     <div class="modal-foot"><button class="btn-ghost" id="logout"><i class="ti ti-logout"></i> Sair</button><button class="btn-primary" data-close>Fechar</button></div>`;
   openOverlay();
   modal.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",closeOverlay));
+  $("#conBtn").addEventListener("click",openConManager);
   $("#logout").addEventListener("click",()=>{ st.isAdmin=false; $("#adminBtn").innerHTML='<i class="ti ti-lock"></i>'; closeOverlay(); toast("Sessão encerrada"); });
   $("#newProd").addEventListener("click",()=>openProductForm(null));
   modal.querySelectorAll("[data-edit]").forEach(b=>b.addEventListener("click",()=>openProductForm(b.getAttribute("data-edit"))));
@@ -942,11 +1000,84 @@ function openAdminList(){
   $("#importFile").addEventListener("change",importJSON);
 }
 
+/* ---------- Gerenciador de Construtoras ---------- */
+let conDraft=null;
+function openConManager(){
+  conDraft = st.construtoras.map(c=>({...c}));
+  renderConManager();
+}
+function renderConManager(){
+  const rows = conDraft.map((c,i)=>{
+    const used = st.items.filter(p=>p.co===c.name).length;
+    return `<div class="con-row">
+      <input type="color" data-con-color="${i}" value="${esc(c.color||'#9a6cf0')}" title="Cor da construtora">
+      <input data-con-name="${i}" value="${esc(c.name)}" placeholder="Nome da construtora">
+      <span class="con-used">${used} ${used===1?'imóvel':'imóveis'}</span>
+      <button class="mini-btn del" data-con-del="${i}" title="Excluir"><i class="ti ti-trash"></i></button>
+    </div>`;
+  }).join("") || `<p style="color:var(--txt4);text-align:center;padding:20px">Nenhuma construtora. Adicione abaixo.</p>`;
+
+  modal.innerHTML=`
+    <div class="modal-head"><button class="icon-btn" id="conBack"><i class="ti ti-arrow-left"></i></button>
+      <div><p class="ttl">Construtoras</p><p class="sub">Nome e cor de cada construtora · a cor aparece no app</p></div>
+      <div class="spacer"></div><button class="icon-btn" data-close><i class="ti ti-x"></i></button></div>
+    <div class="modal-body">
+      <div class="config-note" style="margin-bottom:14px">A <b>cor</b> escolhida aparece no nome da construtora, no destaque do imóvel e nos filtros. Renomear aqui <b>atualiza automaticamente</b> os imóveis que usam essa construtora.</div>
+      <div class="con-list" id="conList">${rows}</div>
+      <button class="mini-btn" id="conAdd" style="margin-top:12px"><i class="ti ti-plus"></i> Nova construtora</button>
+      <p class="err" id="conErr"></p>
+    </div>
+    <div class="modal-foot"><button class="btn-ghost" id="conBack2">Voltar</button><button class="btn-primary" id="conSave"><i class="ti ti-device-floppy"></i> Salvar construtoras</button></div>`;
+
+  modal.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",closeOverlay));
+  $("#conBack").addEventListener("click",openAdminList);
+  $("#conBack2").addEventListener("click",openAdminList);
+  $("#conAdd").addEventListener("click",()=>{ syncConDraft(); conDraft.push({name:"",color:"#9a6cf0",ordem:conDraft.length}); renderConManager(); });
+  modal.querySelectorAll("[data-con-del]").forEach(b=>b.addEventListener("click",()=>{
+    const i=+b.getAttribute("data-con-del"), c=conDraft[i];
+    const used=st.items.filter(p=>p.co===c.name).length;
+    if(used && !confirm(`"${c.name}" tem ${used} imóvel(is). Excluir mesmo assim? Os imóveis ficam sem cor de construtora.`)) return;
+    syncConDraft(); conDraft.splice(i,1); renderConManager();
+  }));
+  $("#conSave").addEventListener("click",saveConstrutoras);
+}
+function syncConDraft(){
+  modal.querySelectorAll("[data-con-name]").forEach(el=>{ const i=+el.getAttribute("data-con-name"); if(conDraft[i]) conDraft[i].name=el.value.trim(); });
+  modal.querySelectorAll("[data-con-color]").forEach(el=>{ const i=+el.getAttribute("data-con-color"); if(conDraft[i]) conDraft[i].color=el.value; });
+}
+async function saveConstrutoras(){
+  syncConDraft();
+  const names=conDraft.map(c=>c.name.trim());
+  if(names.some(n=>!n)){ $("#conErr").textContent="Toda construtora precisa de um nome."; return; }
+  const upper=names.map(n=>n.toUpperCase());
+  if(new Set(upper).size!==upper.length){ $("#conErr").textContent="Há construtoras com nomes repetidos."; return; }
+  const btn=$("#conSave"); btn.disabled=true; btn.innerHTML='<i class="ti ti-loader-2"></i> Salvando...';
+  try{
+    // renomear em cascata nos imóveis (compara pelo id com o estado atual)
+    for(const c of conDraft){
+      if(!c.id) continue;
+      const orig=st.construtoras.find(o=>o.id===c.id);
+      if(orig && orig.name!==c.name){
+        for(const p of st.items){ if(p.co===orig.name){ p.co=c.name; await Store.save(p); } }
+      }
+    }
+    // excluir construtoras removidas
+    const keepIds=conDraft.filter(c=>c.id).map(c=>c.id);
+    for(const o of st.construtoras){ if(o.id && !keepIds.includes(o.id)) await Store.removeCon(o.id); }
+    // salvar (cria/atualiza) com ordem
+    for(let i=0;i<conDraft.length;i++){ conDraft[i].ordem=i; await Store.saveCon(conDraft[i]); }
+    await reloadCon(); await reload();
+    renderSide(); renderMain(); openAdminList();
+    toast("Construtoras salvas");
+  }catch(e){ console.error(e); $("#conErr").textContent="Erro ao salvar: "+e.message; btn.disabled=false; btn.innerHTML='<i class="ti ti-device-floppy"></i> Salvar construtoras'; }
+}
+
 let formDraft=null;
 function openProductForm(id){
   const editing = id ? st.items.find(p=>p.id===id) : null;
+  const defCo = st.construtoras[0] ? st.construtoras[0].name : "SANTER";
   formDraft = editing ? JSON.parse(JSON.stringify(editing)) : {
-    co:"SANTER",n:"",l:"",cid:"",end:"",pr:"",m2:"",st:"Em construção",t:"",a:"",ap:"",e:"",
+    co:defCo,n:"",l:"",cid:"",end:"",pr:"",m2:"",st:"Em construção",t:"",a:"",ap:"",e:"",
     tip:[["",""]],dif:[""],resumo:"",capa:"",materiais:[],ordem:st.items.length
   };
   renderProductForm(editing);
@@ -954,8 +1085,9 @@ function openProductForm(id){
 
 function renderProductForm(editing){
   const d=formDraft;
-  const brandOpts=["SANTER","ROTTAS","STEIN","TORRES"].concat(d.co&&!BRANDS.includes(d.co)?[d.co]:[])
-    .map(b=>`<option value="${esc(b)}" ${d.co===b?"selected":""}>${esc(b)}</option>`).join("");
+  const conNames=st.construtoras.map(c=>c.name);
+  if(d.co && !conNames.includes(d.co)) conNames.push(d.co);
+  const brandOpts=conNames.map(b=>`<option value="${esc(b)}" ${d.co===b?"selected":""}>${esc(b)}</option>`).join("");
   const stOpts=["Em construção","Lançamento","Pronto para morar"].map(s=>`<option ${d.st===s?"selected":""}>${esc(s)}</option>`).join("");
 
   const tipRows=d.tip.map((t,i)=>`<div class="le-row">
@@ -987,8 +1119,8 @@ function renderProductForm(editing){
     <div class="modal-body">
       <div class="form-grid">
         <div class="field"><label>Empreendimento *</label><input id="f_n" value="${esc(d.n)}" placeholder="Ex: Orla da Barra"></div>
-        <div class="field"><label>Construtora</label><select id="f_co">${brandOpts}<option value="__new">+ Nova construtora…</option></select></div>
-        <div class="field full" id="newCoWrap" style="display:none"><label>Nome da nova construtora</label><input id="f_co_new" placeholder="Ex: HORIZONTE"></div>
+        <div class="field"><label>Construtora</label><select id="f_co">${brandOpts}</select>
+          <div class="hint">Para adicionar/editar construtoras e cores, use o botão <b>Construtoras</b> no painel.</div></div>
         <div class="field"><label>Linha / Selo</label><input id="f_l" value="${esc(d.l)}" placeholder="Ex: Santer Prime"></div>
         <div class="field"><label>Status</label><select id="f_st">${stOpts}</select></div>
         <div class="field"><label>Cidade *</label><input id="f_cid" value="${esc(d.cid)}" placeholder="Ex: Barra Velha, SC"></div>
@@ -1043,8 +1175,6 @@ function renderProductForm(editing){
   $("#backList").addEventListener("click",openAdminList);
   $("#backList2").addEventListener("click",openAdminList);
 
-  $("#f_co").addEventListener("change",e=>{ $("#newCoWrap").style.display = e.target.value==="__new"?"block":"none"; });
-
   // tipologias
   $("#addTip").addEventListener("click",()=>{ syncDraft(); d.tip.push(["",""]); renderProductForm(editing); });
   modal.querySelectorAll("[data-tip-del]").forEach(b=>b.addEventListener("click",()=>{ syncDraft(); d.tip.splice(+b.getAttribute("data-tip-del"),1); if(!d.tip.length)d.tip=[["",""]]; renderProductForm(editing); }));
@@ -1068,9 +1198,7 @@ function renderProductForm(editing){
 function syncDraft(){
   const d=formDraft; if(!$("#f_n")) return;
   d.n=$("#f_n").value.trim();
-  let co=$("#f_co").value;
-  if(co==="__new"){ const nv=$("#f_co_new").value.trim().toUpperCase(); if(nv) co=nv; else co="SANTER"; }
-  d.co=co;
+  d.co=$("#f_co").value;
   d.l=$("#f_l").value.trim(); d.st=$("#f_st").value;
   d.cid=$("#f_cid").value.trim(); d.end=$("#f_end").value.trim();
   d.pr=$("#f_pr").value.trim(); d.m2=$("#f_m2").value.trim();
@@ -1102,12 +1230,12 @@ async function saveProduct(editing){
   }catch(e){ console.error(e); $("#formErr").textContent="Erro ao salvar: "+e.message; btn.disabled=false; btn.innerHTML='<i class="ti ti-device-floppy"></i> Salvar imóvel'; }
 }
 
-/* export / import */
+/* export / import — inclui imóveis E construtoras */
 function exportJSON(){
-  const data=JSON.stringify(st.items,null,2);
+  const data=JSON.stringify({versao:1, construtoras:st.construtoras, imoveis:st.items}, null, 2);
   const blob=new Blob([data],{type:"application/json"});
   const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
-  a.download="materiais-alumma-catalogo.json"; a.click();
+  a.download="nox-imoveis-catalogo.json"; a.click();
   toast("Catálogo exportado","ti-download");
 }
 function importJSON(e){
@@ -1115,11 +1243,15 @@ function importJSON(e){
   const r=new FileReader();
   r.onload=async()=>{
     try{
-      const arr=JSON.parse(r.result);
-      if(!Array.isArray(arr)) throw new Error("Formato inválido");
-      if(!confirm(`Importar ${arr.length} imóveis? Eles serão adicionados ao catálogo atual.`)) return;
-      for(const it of arr){ delete it.id; await Store.save(it); }
-      await reload(); openAdminList(); toast("Catálogo importado");
+      const parsed=JSON.parse(r.result);
+      // aceita formato novo {imoveis,construtoras} ou antigo (array de imóveis)
+      const imoveis = Array.isArray(parsed) ? parsed : (parsed.imoveis||[]);
+      const cons = Array.isArray(parsed) ? [] : (parsed.construtoras||[]);
+      if(!imoveis.length && !cons.length) throw new Error("Arquivo sem dados reconhecíveis");
+      if(!confirm(`Importar ${imoveis.length} imóveis e ${cons.length} construtoras? Serão adicionados ao catálogo atual.`)) return;
+      for(const c of cons){ const ex=st.construtoras.find(x=>x.name===c.name); if(!ex){ const nc={...c}; delete nc.id; nc.ordem=st.construtoras.length; await Store.saveCon(nc); await reloadCon(); } }
+      for(const it of imoveis){ const ni={...it}; delete ni.id; await Store.save(ni); }
+      await reloadCon(); await reload(); renderSide(); renderMain(); openAdminList(); toast("Catálogo importado");
     }catch(err){ alert("Erro ao importar: "+err.message); }
   };
   r.readAsText(file); e.target.value="";
@@ -1137,14 +1269,18 @@ $("#scrim").addEventListener("click",closeSide);
    BOOT
    ============================================================ */
 async function reload(){ st.items=await Store.getAll(); }
+async function reloadCon(){
+  try{ st.construtoras = await Store.getCon(); }catch(e){ st.construtoras = SEED_CON.map((c,i)=>({...c, id:"conmem_"+i})); }
+  if(!Array.isArray(st.construtoras) || !st.construtoras.length){ st.construtoras = SEED_CON.map((c,i)=>({...c, id:"conmem_"+i})); }
+}
 
 async function boot(){
-  const tag=$("#cloudTag"), txt=$("#cloudTxt");
-  try{
-    await Store.init();
-    if(Store.useFb){ tag.classList.add("on"); txt.textContent="Firebase"; }
-    else { txt.textContent="Local"; }
-  }catch(e){ console.warn(e); txt.textContent="Local"; }
+  try{ await Store.init(); }
+  catch(e){ console.warn(e); }
+
+  try{ st.construtoras = await Store.seedConIfEmpty(SEED_CON); }
+  catch(e){ console.warn("Falha construtoras — usando padrão.", e); st.construtoras = SEED_CON.map((c,i)=>({...c, id:"conmem_"+i})); }
+  if(!Array.isArray(st.construtoras) || !st.construtoras.length){ st.construtoras = SEED_CON.map((c,i)=>({...c, id:"conmem_"+i})); }
 
   try{
     st.items = await Store.seedIfEmpty(SEED);
@@ -1160,6 +1296,7 @@ async function boot(){
 boot().catch(e=>{
   console.error("Erro no boot — render de emergência.", e);
   st.items = SEED.map((p,i)=>({...p, id:"mem_"+i}));
+  if(!st.construtoras.length) st.construtoras = SEED_CON.map((c,i)=>({...c, id:"conmem_"+i}));
   try{ renderSide(); renderMain(); }catch(_){}
 });
 

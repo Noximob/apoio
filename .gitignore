@@ -1,0 +1,5 @@
+# Config local do Claude Code
+.claude/
+
+# Guia de uso (contém credenciais em texto — manter fora do repo público)
+COMO-USAR.md
