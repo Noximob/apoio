@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>materiais.alumma · Portfólio Imobiliário</title>
+<meta name="description" content="Ferramenta de apresentação de produtos imobiliários para corretores.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.7.0/dist/tabler-icons.min.css">
+<style>
+:root{
+  --bg:#0a1622; --bg2:#0c1a2b; --bg3:#0e1f33; --bg4:#10243a; --panel:#16283f;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+  --txt:#e8eef6; --txt2:#cdd9e6; --txt3:#9fb4cc; --txt4:#7e95ad; --txt5:#5d7790;
+  --accent:#4a9eff; --ok:#5dcaa5; --warn:#e0a23a; --danger:#f0716b;
+  --SANTER:#4a9eff; --ROTTAS:#f0997b; --STEIN:#b39af0; --TORRES:#5dcaa5;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%}
+body{
+  font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  background:radial-gradient(1200px 700px at 80% -10%,#13263d 0%,var(--bg) 55%);
+  color:var(--txt); -webkit-font-smoothing:antialiased; overflow:hidden;
+}
+button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit}
+input,select,textarea{font-family:inherit}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.16);border-radius:5px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.28)}
+::-webkit-scrollbar-track{background:transparent}
+
+/* ---------- Shell ---------- */
+#shell{display:flex;flex-direction:column;height:100vh;height:100dvh}
+#topbar{
+  display:flex;align-items:center;gap:14px;padding:12px 18px;
+  border-bottom:1px solid var(--line);background:rgba(8,18,30,.6);backdrop-filter:blur(8px);flex:none;
+}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.brand .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#4a9eff,#7a6cf0);
+  display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 6px 18px rgba(74,158,255,.35)}
+.brand .logo i{font-size:19px;color:#fff}
+.brand h1{font-size:15px;font-weight:600;margin:0;letter-spacing:.2px;white-space:nowrap}
+.brand h1 b{color:var(--accent);font-weight:700}
+.brand .sub{font-size:10px;color:var(--txt5);letter-spacing:1.5px;margin-top:1px}
+#topbar .spacer{flex:1}
+.cloud-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--txt4);
+  padding:6px 11px;border:1px solid var(--line);border-radius:20px;white-space:nowrap}
+.cloud-tag i{font-size:14px}
+.cloud-tag.on{color:var(--ok);border-color:rgba(93,202,165,.35)}
+.icon-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;color:var(--txt3);transition:.15s;flex:none}
+.icon-btn:hover{background:var(--bg4);color:var(--txt);border-color:var(--line2)}
+.icon-btn i{font-size:19px}
+
+#app{flex:1;display:flex;min-height:0}
+#sideToggle{display:none}
+
+/* ---------- Sidebar ---------- */
+#side{width:280px;flex:none;background:var(--bg2);border-right:1px solid var(--line);
+  overflow-y:auto;display:flex;flex-direction:column}
+.side-head{padding:16px 16px 10px}
+.search{display:flex;align-items:center;gap:8px;background:var(--bg4);border:1px solid var(--line);
+  border-radius:10px;padding:8px 11px;margin-bottom:12px}
+.search i{font-size:16px;color:var(--txt4)}
+.search input{border:none;background:none;color:var(--txt);font-size:13px;width:100%;outline:none}
+.search input::placeholder{color:var(--txt5)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{cursor:pointer;font-size:10px;letter-spacing:.5px;padding:5px 11px;border-radius:20px;
+  border:1px solid var(--line2);background:transparent;transition:.14s}
+.count{font-size:9px;letter-spacing:1px;color:var(--txt5);padding:10px 16px 6px}
+.rows{border-top:1px solid var(--line);flex:1}
+.row{cursor:pointer;display:flex;gap:11px;padding:12px 14px;border-left:2px solid transparent;transition:.12s;position:relative}
+.row:hover{background:rgba(255,255,255,.04)}
+.row.sel{background:rgba(74,158,255,.10)}
+.row .thumb{width:42px;height:42px;flex:none;border-radius:9px;background:var(--panel);
+  display:flex;align-items:center;justify-content:center;overflow:hidden}
+.row .thumb img{width:100%;height:100%;object-fit:cover}
+.row .thumb i{font-size:20px;color:#6f8aa8}
+.row .meta{min-width:0;flex:1}
+.row .meta .nm{font-size:13px;font-weight:500;color:var(--txt);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .meta .ci{font-size:10.5px;color:var(--txt4);margin:2px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .meta .pr{font-size:11px;margin:3px 0 0;font-weight:500}
+.empty-side{padding:30px 18px;text-align:center;color:var(--txt4);font-size:12px;line-height:1.6}
+
+/* ---------- Main ---------- */
+#main{flex:1;overflow-y:auto;min-width:0;background:var(--bg)}
+#main:fullscreen{background:var(--bg)}
+#main .hero{animation:fadeUp .4s ease both}
+#main .stats{animation:fadeUp .4s ease both;animation-delay:.05s}
+#main .body{animation:fadeUp .4s ease both;animation-delay:.1s}
+.vfade{animation:fadeUp .3s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hero{position:relative;min-height:200px;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:20px 26px;background:var(--panel);overflow:hidden}
+.hero .heroimg{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(.62);transform:scale(1.04);transition:transform 6s ease}
+.hero:hover .heroimg{transform:scale(1.1)}
+.hero .heroph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(120% 120% at 70% 0%,color-mix(in srgb,var(--brand,#4a9eff) 18%,transparent),transparent 60%)}
+.hero .heroph i{font-size:62px;color:rgba(255,255,255,.12)}
+.hero .grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,16,28,.05) 0%,rgba(8,16,28,.35) 45%,rgba(8,16,28,.92) 100%),linear-gradient(90deg,rgba(8,16,28,.55),transparent 55%)}
+.hero .price{position:absolute;top:16px;right:24px;text-align:right;z-index:2}
+.hero .price .lab{font-size:9px;letter-spacing:1px;color:var(--txt3);margin:0}
+.hero .price .v{font-size:22px;font-weight:600;color:#fff;margin:1px 0 0}
+.hero .price .pm{font-size:10px;margin:2px 0 0}
+.hero .info{position:relative;z-index:2}
+.badge{display:inline-block;font-size:9px;letter-spacing:1px;color:#0a1622;padding:3px 10px;border-radius:6px;margin-bottom:8px;font-weight:600}
+.hero .co{font-size:11px;letter-spacing:1.5px;margin:0;font-weight:600}
+.hero .nm{font-size:25px;font-weight:600;color:#fff;margin:2px 0 0}
+.hero .li{font-size:12px;font-style:italic;color:var(--txt3);margin:3px 0 0}
+.hero .loc{font-size:11.5px;color:#8aa0b8;margin:6px 0 0}
+.hero .loc i{font-size:13px;vertical-align:-2px}
+
+.stats{display:flex;background:var(--bg3);border-bottom:1px solid var(--line)}
+.stat{flex:1;text-align:center;padding:14px 4px;border-right:1px solid var(--line);transition:background .15s}
+.stat:last-child{border-right:none}
+.stat:hover{background:var(--bg4)}
+.stat .v{font-size:18px;font-weight:600;color:var(--brand,var(--accent));margin:0}
+.stat .l{font-size:9px;letter-spacing:1px;color:var(--txt4);margin:3px 0 0}
+
+.body{padding:18px 26px 40px}
+.pills-bar{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;flex:1}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:22px;
+  background:var(--bg4);border:1px solid var(--line);transition:.16s;font-size:12.5px;color:var(--txt);position:relative}
+.pill:hover{border-color:var(--line2);transform:translateY(-1px)}
+.pill.on{background:var(--brand,var(--accent));border-color:var(--brand,var(--accent));color:#0a1622;font-weight:600;box-shadow:0 8px 22px rgba(0,0,0,.28)}
+.pill i{font-size:16px}
+.pill .dot{position:absolute;top:-3px;right:-3px;min-width:16px;height:16px;padding:0 3px;border-radius:8px;
+  background:var(--brand,var(--accent));color:#0a1622;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg)}
+.pill.on .dot{background:#0a1622;color:var(--brand,var(--accent));border-color:var(--brand,var(--accent))}
+.present-btn{flex:none;display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:22px;
+  font-size:12.5px;font-weight:600;color:#fff;background:linear-gradient(135deg,#4a9eff,#7a6cf0);
+  box-shadow:0 8px 22px rgba(74,158,255,.3);transition:.16s}
+.present-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.present-btn i{font-size:16px}
+
+/* content blocks */
+.lead{font-size:13.5px;line-height:1.7;color:var(--txt2);margin:0 0 20px;white-space:pre-wrap}
+.section-label{font-size:10px;letter-spacing:1.2px;color:#6f88a3;margin:0 0 10px}
+.tip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:22px}
+.tip{background:var(--bg4);border:1px solid var(--line);border-radius:11px;padding:12px 14px}
+.tip .a{font-size:17px;font-weight:600;color:#fff;margin:0}
+.tip .a small{font-size:10px;color:var(--txt4);font-weight:400}
+.tip .d{font-size:11px;color:var(--txt3);margin:4px 0 0}
+.dif-box{background:var(--bg3);border:1px solid var(--line);border-radius:12px;padding:6px 4px}
+.dif{display:flex;align-items:center;gap:10px;padding:9px 12px}
+.dif i{font-size:17px}
+.dif span{font-size:12.5px;color:var(--txt2)}
+
+.viewer-empty{border:1px dashed var(--line2);border-radius:14px;padding:48px 20px;text-align:center}
+.viewer-empty i{font-size:38px;color:var(--txt4)}
+.viewer-empty p{font-size:13px;color:var(--txt3);margin:14px 0 0}
+.viewer-empty small{font-size:11px;color:var(--txt5);display:block;margin-top:6px}
+
+.mat-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.mat-toolbar .name{font-size:13px;color:var(--txt2);font-weight:500;margin-right:auto;min-width:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbtn{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--accent);
+  padding:6px 12px;border:1px solid rgba(74,158,255,.35);border-radius:20px;transition:.14s;white-space:nowrap}
+.tbtn:hover{background:rgba(74,158,255,.12)}
+.tbtn i{font-size:14px}
+.tbtn.wa,.btn-ghost.wa{color:#25d366;border-color:rgba(37,211,102,.4)}
+.tbtn.wa:hover,.btn-ghost.wa:hover{background:rgba(37,211,102,.12)}
+
+.media-frame{background:#05080d;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.media-frame iframe,.media-frame video{display:block;width:100%;border:none;background:#000}
+.media-frame video{max-height:62vh}
+.pdf-frame{height:64vh}
+
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.gcell{aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:var(--bg3);border:1px solid var(--line);
+  cursor:pointer;position:relative}
+.gcell img{width:100%;height:100%;object-fit:cover;transition:.25s}
+.gcell:hover img{transform:scale(1.06)}
+
+.map-wrap{border-radius:14px;overflow:hidden;border:1px solid var(--line);position:relative}
+.map-wrap iframe{display:block;width:100%;height:300px;border:none}
+.map-bar{display:flex;align-items:center;gap:8px;padding:12px 14px;background:var(--bg3)}
+.map-bar .ad{font-size:12px;color:var(--txt2);margin-right:auto}
+
+.link-list{display:flex;flex-direction:column;gap:9px}
+.linkrow{display:flex;align-items:center;gap:11px;padding:12px 14px;background:var(--bg3);
+  border:1px solid var(--line);border-radius:12px;transition:.14s}
+.linkrow:hover{border-color:var(--line2);background:var(--bg4)}
+.linkrow .lr-ic{width:36px;height:36px;flex:none;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  background:color-mix(in srgb,var(--brand,#4a9eff) 16%,transparent)}
+.linkrow .lr-ic i{font-size:18px;color:var(--brand,var(--accent))}
+.linkrow .lr-meta{flex:1;min-width:0}
+.linkrow .lr-n{font-size:13px;font-weight:500;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.linkrow .lr-u{font-size:11px;color:var(--txt5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.link-card{border:1px solid var(--line);border-radius:14px;background:var(--bg3);padding:30px 20px;
+  display:flex;flex-direction:column;align-items:center;gap:13px;text-align:center}
+.link-card .ic{width:54px;height:54px;border-radius:13px;background:rgba(74,158,255,.12);
+  display:flex;align-items:center;justify-content:center}
+.link-card .ic i{font-size:27px;color:var(--accent)}
+.link-card .t{font-size:14px;color:var(--txt);font-weight:600}
+.link-card .s{font-size:11.5px;color:var(--txt4);max-width:300px;line-height:1.5}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#0a1622;background:var(--accent);
+  padding:11px 20px;border-radius:10px;font-weight:600;transition:.14s;border:none}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--txt2);
+  padding:11px 18px;border-radius:10px;border:1px solid var(--line2);transition:.14s}
+.btn-ghost:hover{background:var(--bg4)}
+
+/* ---------- Lightbox ---------- */
+#lightbox{position:fixed;inset:0;background:rgba(3,7,12,.94);z-index:200;display:none;
+  align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+#lightbox.show{display:flex}
+#lightbox img,#lightbox video{max-width:92vw;max-height:84vh;border-radius:8px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+#lightbox .lb-close{position:absolute;top:20px;right:24px}
+#lightbox .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;
+  background:rgba(255,255,255,.10);display:flex;align-items:center;justify-content:center;color:#fff}
+#lightbox .lb-nav:hover{background:rgba(255,255,255,.2)}
+#lbPrev{left:24px}#lbNext{right:24px}
+#lightbox .lb-bar{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:10px}
+#lightbox .lb-cap{position:absolute;top:22px;left:50%;transform:translateX(-50%);color:var(--txt3);font-size:12px}
+
+/* ---------- Modal (admin) ---------- */
+.overlay{position:fixed;inset:0;background:rgba(4,9,16,.72);z-index:150;display:none;
+  align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(6px)}
+.overlay.show{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--line2);border-radius:18px;width:100%;max-width:920px;
+  max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.6)}
+.modal-head{display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--line)}
+.modal-head .ttl{font-size:16px;font-weight:600;margin:0}
+.modal-head .sub{font-size:11px;color:var(--txt4);margin:2px 0 0}
+.modal-head .spacer{flex:1}
+.modal-body{padding:22px;overflow-y:auto}
+.modal-foot{padding:16px 22px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end;background:var(--bg)}
+
+/* login */
+.login-box{max-width:380px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;letter-spacing:.5px;color:var(--txt4);margin-bottom:6px;text-transform:uppercase}
+.field input,.field select,.field textarea{width:100%;background:var(--bg4);border:1px solid var(--line);
+  border-radius:10px;padding:11px 13px;color:var(--txt);font-size:13px;outline:none;transition:.14s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+.field textarea{resize:vertical;min-height:80px;line-height:1.5}
+.field .hint{font-size:10.5px;color:var(--txt5);margin-top:5px;line-height:1.4}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-grid .full{grid-column:1/-1}
+.err{color:var(--danger);font-size:12px;margin:6px 0 0;min-height:16px}
+
+/* admin list */
+.admin-bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.admin-list{display:flex;flex-direction:column;gap:8px}
+.admin-item{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--bg3);
+  border:1px solid var(--line);border-radius:12px}
+.admin-item .thumb{width:40px;height:40px;border-radius:8px;background:var(--panel);overflow:hidden;flex:none;
+  display:flex;align-items:center;justify-content:center}
+.admin-item .thumb img{width:100%;height:100%;object-fit:cover}
+.admin-item .thumb i{font-size:18px;color:#6f8aa8}
+.admin-item .ai-meta{flex:1;min-width:0}
+.admin-item .ai-meta .n{font-size:13px;font-weight:500;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-item .ai-meta .c{font-size:11px;color:var(--txt4);margin:2px 0 0}
+.tag{font-size:9px;letter-spacing:.5px;padding:3px 8px;border-radius:5px;color:#0a1622;font-weight:600}
+
+/* materials editor */
+.mat-section{border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:8px;background:var(--bg3)}
+.mat-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.mat-row{display:flex;align-items:center;gap:10px;padding:9px 11px;background:var(--bg4);border:1px solid var(--line);border-radius:10px}
+.mat-row .mi{width:30px;height:30px;border-radius:7px;flex:none;display:flex;align-items:center;justify-content:center;background:rgba(74,158,255,.12)}
+.mat-row .mi i{font-size:15px;color:var(--accent)}
+.mat-row .mm{flex:1;min-width:0}
+.mat-row .mm .nn{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mat-row .mm .uu{font-size:10px;color:var(--txt5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mat-row .cat{font-size:9px;letter-spacing:.5px;color:var(--txt4);border:1px solid var(--line);padding:2px 7px;border-radius:20px}
+.add-mat{display:grid;grid-template-columns:130px 1fr 1fr auto;gap:8px;margin-top:12px;align-items:end}
+.add-mat .field{margin:0}
+.mini-btn{padding:9px 13px;border-radius:9px;font-size:12px;display:inline-flex;align-items:center;gap:6px}
+.mini-btn.del{color:var(--danger)}
+.mini-btn.del:hover{background:rgba(240,113,107,.1)}
+
+.list-editor .le-row{display:flex;gap:8px;margin-bottom:8px}
+.list-editor .le-row input{flex:1}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;
+  background:var(--bg4);border:1px solid var(--line2);color:var(--txt);padding:12px 20px;border-radius:12px;
+  font-size:13px;z-index:300;transition:.25s;display:flex;align-items:center;gap:9px;box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast i{font-size:17px}
+
+.config-note{background:rgba(74,158,255,.08);border:1px solid rgba(74,158,255,.25);border-radius:12px;
+  padding:14px 16px;font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:18px}
+.config-note b{color:var(--accent)}
+.config-note code{background:rgba(0,0,0,.3);padding:1px 6px;border-radius:5px;font-size:11px}
+
+/* responsive */
+@media(max-width:820px){
+  #side{position:fixed;top:0;left:0;bottom:0;z-index:120;transform:translateX(-100%);transition:.25s;box-shadow:0 0 60px rgba(0,0,0,.6)}
+  #side.open{transform:none}
+  #sideToggle{display:flex}
+  .form-grid{grid-template-columns:1fr}
+  .add-mat{grid-template-columns:1fr 1fr}
+  .gallery{grid-template-columns:repeat(2,1fr)}
+  .body{padding:16px}
+  .hero{padding:16px}
+  #scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:115;display:none}
+  #scrim.show{display:block}
+}
+</style>
+</head>
+<body>
+<div id="shell">
+  <header id="topbar">
+    <button id="sideToggle" class="icon-btn" aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+    <div class="brand">
+      <div class="logo"><i class="ti ti-building-skyscraper"></i></div>
+      <div>
+        <h1>materiais<b>.alumma</b></h1>
+        <div class="sub">PORTFÓLIO IMOBILIÁRIO</div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <span id="cloudTag" class="cloud-tag"><i class="ti ti-database"></i><span id="cloudTxt">Local</span></span>
+    <button id="adminBtn" class="icon-btn" title="Administrador" aria-label="Administrador"><i class="ti ti-lock"></i></button>
+  </header>
+
+  <div id="app">
+    <div id="scrim"></div>
+    <aside id="side" aria-label="Lista de imóveis"></aside>
+    <main id="main"></main>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" role="dialog" aria-label="Visualizador em tela cheia">
+  <button class="lb-close icon-btn" id="lbClose" aria-label="Fechar"><i class="ti ti-x"></i></button>
+  <div class="lb-cap" id="lbCap"></div>
+  <button class="lb-nav" id="lbPrev" aria-label="Anterior"><i class="ti ti-chevron-left"></i></button>
+  <div id="lbStage"></div>
+  <button class="lb-nav" id="lbNext" aria-label="Próximo"><i class="ti ti-chevron-right"></i></button>
+  <div class="lb-bar">
+    <button class="tbtn wa" id="lbShare"><i class="ti ti-brand-whatsapp"></i> WhatsApp</button>
+    <a class="tbtn" id="lbDownload" target="_blank" rel="noopener" download><i class="ti ti-download"></i> baixar</a>
+  </div>
+</div>
+
+<!-- Overlay (login + admin) -->
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   CONFIG — Firebase (cole sua config aqui quando for publicar)
+   Enquanto estiver vazio, o app roda 100% local (localStorage).
+   ============================================================ */
+const FIREBASE_CONFIG = {
+  // apiKey: "...",
+  // authDomain: "...",
+  // projectId: "...",
+  // storageBucket: "...",
+  // messagingSenderId: "...",
+  // appId: "..."
+};
+const ADMIN_USER = "nox";
+const ADMIN_PASS = "nox2025";
+
+const BRANDS = ["SANTER","ROTTAS","STEIN","TORRES"];
+const BRAND_COLOR = {SANTER:"#4a9eff",ROTTAS:"#f0997b",STEIN:"#b39af0",TORRES:"#5dcaa5"};
+const brandColor = c => BRAND_COLOR[c] || "#7a9ccf";
+const stColor = s => s==="Em construção" ? "#e0a23a" : s==="Lançamento" ? "#4a9eff" : "#5dcaa5";
+
+const CATEGORIES = [
+  {key:"apresentacao", tab:"Apresentação", icon:"ti-presentation",  kind:"pdf",   single:true},
+  {key:"tabela",       tab:"Tabela",       icon:"ti-table",         kind:"link",  single:true},
+  {key:"plantas",      tab:"Plantas",      icon:"ti-vector",        kind:"image"},
+  {key:"maquete",      tab:"Maquete",      icon:"ti-box",           kind:"video", single:true},
+  {key:"decorado",     tab:"Decorado",     icon:"ti-sofa",          kind:"video", single:true},
+  {key:"imagens",      tab:"Imagens",      icon:"ti-photo",         kind:"image"},
+  {key:"video",        tab:"Vídeos",       icon:"ti-movie",         kind:"video"},
+  {key:"links",        tab:"Links",        icon:"ti-link",          kind:"linklist"},
+];
+const catByKey = k => CATEGORIES.find(c=>c.key===k);
+
+/* ============================================================
+   GitHub -> jsDelivr (faz PDF/vídeo abrir embutido + CORS ok)
+   ============================================================ */
+function toCdn(url){
+  if(!url) return url;
+  url = url.trim();
+  // github.com/user/repo/blob/branch/path  -> cdn.jsdelivr.net/gh/user/repo@branch/path
+  let m = url.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)$/i);
+  if(m) return `https://cdn.jsdelivr.net/gh/${m[1]}/${m[2]}@${m[3]}/${m[4]}`;
+  // raw.githubusercontent.com/user/repo/branch/path
+  m = url.match(/^https?:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)\/(.+)$/i);
+  if(m) return `https://cdn.jsdelivr.net/gh/${m[1]}/${m[2]}@${m[3]}/${m[4]}`;
+  return url;
+}
+
+/* ============================================================
+   STORE — Firebase Firestore se configurado, senão localStorage
+   ============================================================ */
+const Store = (function(){
+  const LS_KEY = "alumma.products.v3";
+  let useFb = false, db = null, ready = false;
+
+  function hasConfig(){ return FIREBASE_CONFIG && FIREBASE_CONFIG.projectId; }
+
+  function loadScript(src){
+    return new Promise((res,rej)=>{
+      const s=document.createElement("script"); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s);
+    });
+  }
+
+  async function initFirebase(){
+    await loadScript("https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js");
+    await loadScript("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js");
+    firebase.initializeApp(FIREBASE_CONFIG);
+    db = firebase.firestore();
+    useFb = true;
+  }
+
+  async function init(){
+    if(hasConfig()){
+      try{ await initFirebase(); }
+      catch(e){ console.warn("Firebase falhou, usando local:", e); useFb=false; }
+    }
+    ready = true;
+    return {useFb};
+  }
+
+  // local helpers — fonte de verdade em memória, persistência best-effort
+  let mem = null;
+  function lsGet(){
+    if(mem===null){
+      try{ mem = JSON.parse(localStorage.getItem(LS_KEY)||"[]"); }
+      catch(e){ mem = []; }
+      if(!Array.isArray(mem)) mem = [];
+    }
+    return mem;
+  }
+  function lsSet(arr){
+    mem = arr;
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
+    catch(e){ console.warn("localStorage indisponível — dados mantidos só nesta sessão.", e); }
+  }
+
+  async function getAll(){
+    if(useFb){
+      const snap = await db.collection("imoveis").orderBy("ordem","asc").get();
+      return snap.docs.map(d=>({id:d.id, ...d.data()}));
+    }
+    return lsGet().sort((a,b)=>(a.ordem||0)-(b.ordem||0));
+  }
+  async function save(item){
+    if(useFb){
+      const id = item.id || db.collection("imoveis").doc().id;
+      const data = {...item}; delete data.id;
+      await db.collection("imoveis").doc(id).set(data, {merge:true});
+      return id;
+    }
+    const arr = lsGet();
+    if(item.id){ const i=arr.findIndex(x=>x.id===item.id); if(i>=0) arr[i]=item; else arr.push(item); }
+    else { item.id = "loc_"+Date.now()+"_"+Math.floor(performance.now()*1000%100000); arr.push(item); }
+    lsSet(arr); return item.id;
+  }
+  async function remove(id){
+    if(useFb){ await db.collection("imoveis").doc(id).delete(); return; }
+    lsSet(lsGet().filter(x=>x.id!==id));
+  }
+  async function seedIfEmpty(seed){
+    const all = await getAll();
+    if(all.length) return all;
+    for(const item of seed){ await save(item); }
+    return getAll();
+  }
+  return {init, getAll, save, remove, seedIfEmpty, get useFb(){return useFb;}, hasConfig};
+})();
+
+/* ============================================================
+   SEED — catálogo inicial (sem materiais ainda)
+   ============================================================ */
+const SEED = [
+  /* ===== IMÓVEL DE EXEMPLO — materiais demo (troque os links pelos seus do GitHub) ===== */
+  {co:'STEIN',n:'Stein One',l:'Stein Signature',cid:'Bal. Camboriú, SC',end:'Av. Atlântica, 3500',pr:'2.400.000',m2:'21.000',st:'Lançamento',t:'1',a:'40',ap:'120',e:'Dez/30',
+   tip:[['110,00','3 suítes'],['168,00','4 suítes'],['240,00','Cobertura duplex']],
+   dif:['Frente mar na Av. Atlântica','Infinity pool no rooftop','Concierge e portaria 24h','Heliponto privativo','Spa, sauna e fitness premium','2 a 4 vagas por unidade'],
+   resumo:'Stein One redefine o conceito de morar à beira-mar na Avenida Atlântica de Balneário Camboriú. Torre única e exclusiva, com apenas 120 unidades amplas, infinity pool no rooftop, concierge 24h e acabamento de altíssimo padrão. Plantas de 110 m² a coberturas duplex de 240 m², todas com vista permanente e desimpedida para o mar.\n\nLançamento com condições especiais para os primeiros investidores. Entrega prevista para dezembro de 2030.',
+   materiais:[
+     {cat:'apresentacao',name:'Book de apresentação',url:'https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf'},
+     {cat:'tabela',name:'Tabela de valores e disponibilidade',url:'https://pdfobject.com/pdf/sample.pdf'},
+     {cat:'imagens',name:'Fachada',url:'https://picsum.photos/seed/steinone-fachada/1280/860'},
+     {cat:'imagens',name:'Rooftop',url:'https://picsum.photos/seed/steinone-rooftop/1280/860'},
+     {cat:'imagens',name:'Lobby',url:'https://picsum.photos/seed/steinone-lobby/1280/860'},
+     {cat:'imagens',name:'Vista mar',url:'https://picsum.photos/seed/steinone-vista/1280/860'},
+     {cat:'imagens',name:'Living',url:'https://picsum.photos/seed/steinone-living/1280/860'},
+     {cat:'plantas',name:'Planta — 110 m² (3 suítes)',url:'https://picsum.photos/seed/steinone-planta1/1000/1000'},
+     {cat:'plantas',name:'Planta — Cobertura 240 m²',url:'https://picsum.photos/seed/steinone-planta2/1000/1000'},
+     {cat:'maquete',name:'Maquete 3D animada',url:'https://www.youtube.com/watch?v=aqz-KE-bpKQ'},
+     {cat:'decorado',name:'Tour pelo apartamento decorado',url:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'},
+     {cat:'links',name:'Site oficial do empreendimento',url:'https://www.google.com'},
+     {cat:'links',name:'Tour virtual 360°',url:'https://www.google.com'},
+     {cat:'links',name:'Memorial descritivo',url:'https://www.google.com'}
+   ]},
+  {co:'SANTER',n:'Orla da Barra',l:'Santer Prime',cid:'Barra Velha, SC',end:'Av. Avelino José Borges, 1448',pr:'853.007',m2:'13.028',st:'Em construção',t:'2',a:'30+',ap:'—',e:'Dez/29',tip:[['68,72','Suíte + 1 dorm'],['81,83','Suíte + 2 dorm'],['170,84','3 suítes']],dif:['Vista mar em todos os aptos','Hobby box privativo','30 pavimentos + ático','62.689 m² de área total'],resumo:'',materiais:[]},
+  {co:'SANTER',n:'Vivatto',l:'Santer Class',cid:'Barra Velha, SC',end:'Rua das Gaivotas, 210',pr:'1.073.145',m2:'11.400',st:'Em construção',t:'1',a:'22',ap:'88',e:'Jun/28',tip:[['58,40','2 dorms'],['72,10','Suíte + 1 dorm'],['90,30','Suíte + 2 dorm']],dif:['Rooftop com piscina','Coworking','Bicicletário','Pet place'],resumo:'',materiais:[]},
+  {co:'SANTER',n:'Marine',l:'Santer Prime',cid:'Barra Velha, SC',end:'Av. Beira Mar, 900',pr:'2.893.189',m2:'18.900',st:'Lançamento',t:'2',a:'28',ap:'112',e:'Dez/30',tip:[['96,00','3 suítes'],['134,00','3 suítes'],['210,00','4 suítes cobertura']],dif:['Frente mar','Beach service','Spa e sauna','2 vagas por unidade'],resumo:'',materiais:[]},
+  {co:'SANTER',n:'Punta Cana',l:'Santer Class',cid:'Bal. Piçarras, SC',end:'Rua dos Corais, 55',pr:'1.179.979',m2:'12.100',st:'Em construção',t:'1',a:'20',ap:'76',e:'Mar/28',tip:[['62,00','Suíte + 1 dorm'],['84,00','Suíte + 2 dorm'],['98,00','3 dorms']],dif:['Piscina aquecida','Salão de festas','Espaço gourmet','Playground'],resumo:'',materiais:[]},
+  {co:'ROTTAS',n:'Brava Sky',l:'Rottas Living',cid:'Itajaí, SC',end:'Praia Brava, 1200',pr:'1.450.000',m2:'14.800',st:'Lançamento',t:'1',a:'24',ap:'96',e:'Set/29',tip:[['70,00','Suíte + 1 dorm'],['92,00','Suíte + 2 dorm'],['120,00','3 suítes']],dif:['Vista para a Brava','Lazer na cobertura','Fachada premium','Lobby pé-direito duplo'],resumo:'',materiais:[]},
+  {co:'ROTTAS',n:'Costa Azul',l:'Rottas Class',cid:'Penha, SC',end:'Av. Eugênio Krause, 480',pr:'690.000',m2:'9.800',st:'Em construção',t:'1',a:'16',ap:'64',e:'Nov/27',tip:[['48,00','2 dorms'],['60,00','Suíte + 1 dorm'],['72,00','Suíte + 2 dorm']],dif:['Próximo ao Beto Carrero','Piscina','Academia','Salão gourmet'],resumo:'',materiais:[]},
+  {co:'ROTTAS',n:'Mar del Plata',l:'Rottas Prime',cid:'Bal. Piçarras, SC',end:'Rua Atlântica, 333',pr:'980.000',m2:'11.900',st:'Em construção',t:'1',a:'18',ap:'72',e:'Ago/28',tip:[['64,00','Suíte + 1 dorm'],['86,00','Suíte + 2 dorm'],['104,00','3 dorms']],dif:['Vista mar','Rooftop','Coworking','2 vagas'],resumo:'',materiais:[]},
+  {co:'STEIN',n:'Horizonte Stein',l:'Stein Living',cid:'Itapema, SC',end:'Av. Nereu Ramos, 1100',pr:'1.150.000',m2:'13.200',st:'Em construção',t:'2',a:'26',ap:'140',e:'Jul/29',tip:[['66,00','Suíte + 1 dorm'],['88,00','Suíte + 2 dorm'],['116,00','3 suítes']],dif:['Quadra de tênis','Beach tennis','Espaço kids','Pet care'],resumo:'',materiais:[]},
+  {co:'STEIN',n:'Stein Park',l:'Stein Class',cid:'Itajaí, SC',end:'Rua Heitor Liberato, 700',pr:'760.000',m2:'10.100',st:'Em construção',t:'1',a:'18',ap:'68',e:'Mai/28',tip:[['52,00','2 dorms'],['68,00','Suíte + 1 dorm'],['84,00','Suíte + 2 dorm']],dif:['Praça interna','Coworking','Lavanderia','Bicicletário'],resumo:'',materiais:[]},
+  {co:'TORRES',n:'Torres Atlântico',l:'Torres Prime',cid:'Bal. Camboriú, SC',end:'Barra Sul, 250',pr:'3.200.000',m2:'24.500',st:'Lançamento',t:'2',a:'42',ap:'160',e:'Dez/31',tip:[['120,00','3 suítes'],['180,00','4 suítes'],['280,00','cobertura']],dif:['Vista Barra Sul','Marina próxima','Spa completo','4 vagas cobertura'],resumo:'',materiais:[]},
+  {co:'TORRES',n:'Mirante Torres',l:'Torres Living',cid:'Itapema, SC',end:'Morretes, 90',pr:'1.320.000',m2:'13.900',st:'Em construção',t:'1',a:'28',ap:'104',e:'Out/29',tip:[['72,00','Suíte + 1 dorm'],['98,00','Suíte + 2 dorm'],['130,00','3 suítes']],dif:['Vista panorâmica','Rooftop bar','Academia premium','Coworking'],resumo:'',materiais:[]},
+  {co:'TORRES',n:'Torres Marina',l:'Torres Class',cid:'Porto Belo, SC',end:'Perequê, 410',pr:'890.000',m2:'11.200',st:'Em construção',t:'1',a:'17',ap:'66',e:'Fev/28',tip:[['60,00','Suíte + 1 dorm'],['82,00','Suíte + 2 dorm'],['100,00','3 dorms']],dif:['Próximo à marina','Piscina','Gourmet','Playground'],resumo:'',materiais:[]},
+  {co:'TORRES',n:'Reserva Torres',l:'Torres Prime',cid:'Bombinhas, SC',end:'Bombas, 1500',pr:'1.680.000',m2:'16.400',st:'Lançamento',t:'1',a:'20',ap:'80',e:'Mar/30',tip:[['80,00','Suíte + 2 dorm'],['110,00','3 suítes'],['150,00','cobertura']],dif:['Mata preservada','Vista mar','Beach club','Trilha ecológica'],resumo:'',materiais:[]},
+  {co:'TORRES',n:'Torres Sul',l:'Torres Living',cid:'Bal. Piçarras, SC',end:'Av. Litorânea, 60',pr:'720.000',m2:'9.600',st:'Em construção',t:'1',a:'16',ap:'62',e:'Set/27',tip:[['50,00','2 dorms'],['64,00','Suíte + 1 dorm'],['78,00','Suíte + 2 dorm']],dif:['Próximo à praia','Piscina','Salão de festas','Academia'],resumo:'',materiais:[]}
+].map((p,i)=>({...p, ordem:i}));
+
+/* ============================================================
+   STATE + DOM
+   ============================================================ */
+const st = { items:[], i:0, filter:"TODOS", q:"", tab:"resumo", isAdmin:false, lb:{list:[],idx:0} };
+const $ = s => document.querySelector(s);
+const side = $("#side"), main = $("#main");
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const enc = encodeURIComponent;
+
+function toast(msg, icon="ti-check"){
+  const t=$("#toast"); t.innerHTML=`<i class="ti ${icon}"></i>${esc(msg)}`; t.classList.add("show");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),2600);
+}
+
+function copyText(text){
+  const done=()=>toast("Link copiado — cole no WhatsApp","ti-copy");
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
+  } else fallbackCopy(text,done);
+}
+function fallbackCopy(text,done){
+  const ta=document.createElement("textarea");
+  ta.value=text; ta.style.position="fixed"; ta.style.left="-9999px"; document.body.appendChild(ta); ta.focus(); ta.select();
+  try{ document.execCommand("copy"); done(); }catch(e){ toast("Copie o link manualmente","ti-link"); }
+  document.body.removeChild(ta);
+}
+function waLink(text){ return "https://wa.me/?text="+enc(text); }
+function fileNameFromUrl(url){
+  try{ const u=new URL(url); const n=decodeURIComponent(u.pathname.split("/").pop()||""); return n||"arquivo"; }
+  catch(e){ return "arquivo"; }
+}
+// Encaminhar: no celular tenta enviar o ARQUIVO (foto/pdf) pro WhatsApp; senão manda o LINK
+async function doShare(url, text, asFile){
+  if(asFile && navigator.canShare){
+    try{
+      const r=await fetch(url);
+      if(r.ok){
+        const b=await r.blob();
+        const f=new File([b], fileNameFromUrl(url), {type:b.type||"application/octet-stream"});
+        if(navigator.canShare({files:[f]})){ await navigator.share({files:[f], text}); return; }
+      }
+    }catch(e){ /* cai pro link */ }
+  }
+  window.open(waLink(text),"_blank");
+}
+function waBtn(url, text, asFile){
+  return `<button class="tbtn wa" data-su="${esc(url)}" data-st="${esc(text)}" data-sf="${asFile?1:0}"><i class="ti ti-brand-whatsapp"></i> WhatsApp</button>`;
+}
+
+/* materials helpers */
+function matsOf(p, key){ return (p.materiais||[]).filter(m=>m.cat===key); }
+function hasMat(p, key){ return matsOf(p,key).length>0; }
+function firstImg(p){
+  const m=(p.materiais||[]).find(x=>x.cat==="imagens"||catByKey(x.cat)?.kind==="image");
+  return m? toCdn(m.url):null;
+}
+// foto de capa escolhida no admin; se não houver, usa a 1ª imagem
+function coverImg(p){
+  if(p.capa && p.capa.trim()){
+    const exists=(p.materiais||[]).some(m=>m.url===p.capa);
+    if(exists || /^https?:/i.test(p.capa)) return toCdn(p.capa);
+  }
+  return firstImg(p);
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+function visibleItems(){
+  const q=st.q.trim().toLowerCase();
+  return st.items.map((p,idx)=>({p,idx}))
+    .filter(o=> st.filter==="TODOS" || o.p.co===st.filter)
+    .filter(o=>{
+      if(!q) return true;
+      const p=o.p; return (p.n+" "+p.cid+" "+(p.l||"")+" "+(p.co||"")).toLowerCase().includes(q);
+    });
+}
+
+function renderSide(){
+  const brands = ["TODOS", ...Array.from(new Set([...BRANDS, ...st.items.map(p=>p.co)]))];
+  const chips = brands.map(c=>{
+    const on=st.filter===c, col=c==="TODOS"?"#9fb4cc":brandColor(c);
+    return `<span class="chip" data-f="${esc(c)}" style="border-color:${on?col:"var(--line2)"};color:${on?"#0a1622":col};background:${on?col:"transparent"};">${esc(c)}</span>`;
+  }).join("");
+
+  const items = visibleItems();
+  const rows = items.length ? items.map(o=>{
+    const p=o.p, sel=o.idx===st.i, img=coverImg(p);
+    return `<div class="row ${sel?"sel":""}" data-go="${o.idx}" style="border-left-color:${sel?brandColor(p.co):"transparent"}">
+      <div class="thumb">${img?`<img src="${esc(img)}" alt="" loading="lazy" onerror="this.style.display='none';this.parentNode.innerHTML='&lt;i class=\\'ti ti-building-skyscraper\\'&gt;&lt;/i&gt;'">`:`<i class="ti ti-building-skyscraper"></i>`}</div>
+      <div class="meta">
+        <p class="nm">${esc(p.n)}</p>
+        <p class="ci">${esc(p.cid)}</p>
+        <p class="pr" style="color:${stColor(p.st)}">${(p.pr&&p.pr.trim())?"R$ "+esc(p.pr):"Sob consulta"}</p>
+      </div></div>`;
+  }).join("") : `<div class="empty-side"><i class="ti ti-search-off" style="font-size:30px;opacity:.5"></i><p>Nenhum imóvel encontrado.</p></div>`;
+
+  side.innerHTML = `
+    <div class="side-head">
+      <p style="font-size:9px;letter-spacing:1.5px;color:var(--txt5);margin:0 0 10px">LITORAL CATARINENSE · 2026</p>
+      <div class="search"><i class="ti ti-search"></i><input id="searchInp" placeholder="Buscar imóvel..." value="${esc(st.q)}"></div>
+      <div class="chips">${chips}</div>
+    </div>
+    <p class="count">${items.length} ${items.length===1?"IMÓVEL":"IMÓVEIS"}</p>
+    <div class="rows">${rows}</div>`;
+
+  const sInp=$("#searchInp");
+  sInp.addEventListener("input",()=>{ st.q=sInp.value; const pos=sInp.selectionStart; renderSide(); const n=$("#searchInp"); n.focus(); try{n.setSelectionRange(pos,pos);}catch(e){} });
+  side.querySelectorAll("[data-f]").forEach(el=>el.addEventListener("click",()=>{ st.filter=el.getAttribute("data-f"); renderSide(); }));
+  side.querySelectorAll("[data-go]").forEach(el=>el.addEventListener("click",()=>{
+    st.i=+el.getAttribute("data-go"); st.tab="resumo"; renderSide(); renderMain(); main.scrollTop=0; closeSide();
+  }));
+}
+
+/* ============================================================
+   MAIN + VIEWER
+   ============================================================ */
+function activeTabs(p){
+  const tabs=[{key:"resumo",tab:"Resumo",icon:"ti-list-details"}];
+  CATEGORIES.forEach(c=>{ if(hasMat(p,c.key)) tabs.push({key:c.key,tab:c.tab,icon:c.icon,count:matsOf(p,c.key).length}); });
+  tabs.push({key:"local",tab:"Localização",icon:"ti-map-pin"});
+  return tabs;
+}
+
+function downloadBtn(url,label){
+  return `<a class="tbtn" href="${esc(url)}" target="_blank" rel="noopener" download><i class="ti ti-download"></i> baixar ${esc(label||"")}</a>`;
+}
+function fullscreenBtn(){ return `<button class="tbtn" data-fs><i class="ti ti-maximize"></i> tela cheia</button>`; }
+
+function viewerEmpty(txt){
+  return `<div class="viewer-empty"><i class="ti ti-folder-open"></i><p>${esc(txt)}</p>
+    <small>${st.isAdmin?"Adicione no painel de administrador.":"Materiais ainda não cadastrados para este imóvel."}</small></div>`;
+}
+
+function renderViewer(p){
+  const col=brandColor(p.co);
+
+  if(st.tab==="resumo"){
+    const tips=(p.tip||[]).map(t=>`<div class="tip"><p class="a">${esc(t[0])} <small>m²</small></p><p class="d">${esc(t[1])}</p></div>`).join("");
+    const difs=(p.dif||[]).map(d=>`<div class="dif"><i class="ti ti-circle-check" style="color:${col}"></i><span>${esc(d)}</span></div>`).join("");
+    const lead = p.resumo && p.resumo.trim() ? p.resumo
+      : `Torre única com lazer completo, fachada premium e acabamento de alto padrão. Unidades de ${p.tip?.[0]?.[0]||"—"} a ${p.tip?.[p.tip.length-1]?.[0]||"—"} m². Entrega prevista para ${p.e}.`;
+    return `<p class="lead">${esc(lead)}</p>
+      ${tips?`<p class="section-label">TIPOLOGIAS</p><div class="tip-grid">${tips}</div>`:""}
+      ${difs?`<p class="section-label">DIFERENCIAIS</p><div class="dif-box">${difs}</div>`:""}`;
+  }
+
+  if(st.tab==="local"){
+    const q=enc(`${p.end}, ${p.cid}`);
+    const mapsUrl=`https://www.google.com/maps/search/?api=1&query=${q}`;
+    const waText=`📍 ${p.n} — ${p.cid}\n${p.end}\nLocalização: ${mapsUrl}`;
+    return `<div class="map-wrap">
+      <iframe loading="lazy" src="https://www.google.com/maps?q=${q}&output=embed" title="Mapa"></iframe>
+      <div class="map-bar"><i class="ti ti-map-pin-filled" style="font-size:18px;color:${col}"></i>
+        <span class="ad">${esc(p.cid)} · ${esc(p.end)}</span>
+        <button class="tbtn" data-copy="${esc(mapsUrl)}"><i class="ti ti-copy"></i> copiar link</button>
+        <a class="tbtn" data-wa="${esc(waText)}" target="_blank" rel="noopener" href="${esc(waLink(waText))}"><i class="ti ti-brand-whatsapp"></i> WhatsApp</a>
+        <a class="tbtn" target="_blank" rel="noopener" href="${esc(mapsUrl)}"><i class="ti ti-external-link"></i> abrir no Maps</a></div></div>`;
+  }
+
+  const cat=catByKey(st.tab);
+  if(!cat) return viewerEmpty("Conteúdo indisponível.");
+  const mats=matsOf(p,st.tab);
+  if(!mats.length) return viewerEmpty(`Nenhum material em "${cat.tab}".`);
+
+  // PDF
+  if(cat.kind==="pdf"){
+    const m=mats[0], url=toCdn(m.url);
+    const text=`${p.n} — ${m.name||cat.tab}\n${url}`;
+    return `<div class="mat-toolbar"><span class="name">${esc(m.name||cat.tab)}</span>
+        <a class="tbtn" data-fs-link href="${esc(url)}" target="_blank" rel="noopener"><i class="ti ti-maximize"></i> tela cheia</a>
+        ${waBtn(url,text,true)}${downloadBtn(url,"")}</div>
+      <div class="media-frame"><iframe class="pdf-frame" src="${esc(url)}#view=FitH" title="${esc(m.name||"PDF")}"></iframe></div>`;
+  }
+  // VIDEO
+  if(cat.kind==="video"){
+    const m=mats[0], url=toCdn(m.url);
+    const yt=ytId(m.url);
+    // mp4 baixa direto; YouTube só baixa se houver um link de download (.mp4) configurado
+    const dl = m.dl && m.dl.trim() ? toCdn(m.dl) : (yt ? null : url);
+    const dlBtn = dl ? downloadBtn(dl,"vídeo") : "";
+    if(yt){
+      const shareUrl = "https://youtu.be/"+yt;
+      const text=`${p.n} — ${m.name||cat.tab}\n${shareUrl}`;
+      return `<div class="mat-toolbar"><span class="name">${esc(m.name||cat.tab)}</span>${waBtn(shareUrl,text,false)}${dlBtn}
+        <a class="tbtn" href="${shareUrl}" target="_blank" rel="noopener"><i class="ti ti-external-link"></i> abrir em tela cheia</a></div>
+        <div class="media-frame"><iframe style="height:62vh" src="https://www.youtube-nocookie.com/embed/${yt}?rel=0&modestbranding=1&playsinline=1&color=white&iv_load_policy=3" allow="autoplay; fullscreen; encrypted-media" allowfullscreen title="Vídeo"></iframe></div>`;
+    }
+    const vtext=`${p.n} — ${m.name||cat.tab}\n${dl||url}`;
+    let extra="";
+    if(mats.length>1) extra=`<div class="gallery" style="margin-top:12px">`+mats.slice(1).map((x,k)=>`<div class="gcell" data-vid="${esc(toCdn(x.url))}"><video src="${esc(toCdn(x.url))}#t=0.5" muted preload="metadata" style="width:100%;height:100%;object-fit:cover"></video></div>`).join("")+`</div>`;
+    return `<div class="mat-toolbar"><span class="name">${esc(m.name||cat.tab)}</span>${waBtn(dl||url,vtext,false)}${dlBtn}</div>
+      <div class="media-frame"><video src="${esc(url)}" controls playsinline preload="metadata"></video></div>${extra}`;
+  }
+  // IMAGES / PLANTAS
+  if(cat.kind==="image"){
+    const cells=mats.map((m,k)=>{
+      const u=toCdn(m.url);
+      return `<div class="gcell" data-img="${k}"><img src="${esc(u)}" alt="${esc(m.name||"")}" loading="lazy" onerror="this.parentNode.style.opacity=.4"></div>`;
+    }).join("");
+    return `<div class="mat-toolbar"><span class="name">${esc(cat.tab)} · ${mats.length} ${mats.length===1?"item":"itens"}</span>
+        <span style="font-size:11px;color:var(--txt5)"><i class="ti ti-hand-finger" style="font-size:13px;vertical-align:-2px"></i> toque para ampliar, baixar ou encaminhar</span></div>
+      <div class="gallery">${cells}</div>`;
+  }
+  // LINK (tabela) — sempre abre em nova aba
+  if(cat.kind==="link"){
+    const m=mats[0], url=m.url.trim(), text=`${p.n} — ${m.name||cat.tab}\n${url}`;
+    return `<div class="link-card"><div class="ic"><i class="ti ${cat.icon}"></i></div>
+      <div class="t">${esc(m.name||cat.tab)}</div>
+      <div class="s">Abre em nova aba para você apresentar valores e disponibilidade.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+        <a class="btn-primary" href="${esc(url)}" target="_blank" rel="noopener">abrir ${esc(cat.tab.toLowerCase())} <i class="ti ti-external-link"></i></a>
+        <button class="btn-ghost wa" data-su="${esc(url)}" data-st="${esc(text)}" data-sf="0"><i class="ti ti-brand-whatsapp"></i> WhatsApp</button>
+        <button class="btn-ghost" data-copy="${esc(url)}"><i class="ti ti-copy"></i> copiar link</button></div></div>`;
+  }
+  // LISTA DE LINKS
+  if(cat.kind==="linklist"){
+    const rows=mats.map(m=>{
+      const url=m.url.trim(), waText=`${p.n} — ${m.name||"link"}\n${url}`;
+      return `<div class="linkrow">
+        <div class="lr-ic"><i class="ti ti-link"></i></div>
+        <div class="lr-meta"><div class="lr-n">${esc(m.name||url)}</div><div class="lr-u">${esc(url)}</div></div>
+        <button class="tbtn" data-copy="${esc(url)}"><i class="ti ti-copy"></i></button>
+        <a class="tbtn" target="_blank" rel="noopener" href="${esc(waLink(waText))}"><i class="ti ti-brand-whatsapp"></i></a>
+        <a class="tbtn" target="_blank" rel="noopener" href="${esc(url)}"><i class="ti ti-external-link"></i> abrir</a>
+      </div>`;
+    }).join("");
+    return `<div class="mat-toolbar"><span class="name">${esc(cat.tab)} · ${mats.length} ${mats.length===1?"link":"links"}</span></div>
+      <div class="link-list">${rows}</div>`;
+  }
+  return viewerEmpty("Conteúdo indisponível.");
+}
+
+function ytId(url){
+  const m=String(url).match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/);
+  return m?m[1]:null;
+}
+
+function renderMain(){
+  if(!st.items.length){
+    main.innerHTML=`<div style="padding:60px 24px;text-align:center;color:var(--txt3)">
+      <i class="ti ti-building-skyscraper" style="font-size:50px;opacity:.4"></i>
+      <p style="margin-top:16px;font-size:15px">Nenhum imóvel cadastrado ainda.</p>
+      <p style="font-size:12px;color:var(--txt5)">Entre no administrador (cadeado no topo) para cadastrar o primeiro.</p></div>`;
+    return;
+  }
+  if(st.i>=st.items.length) st.i=0;
+  const p=st.items[st.i], col=brandColor(p.co), hero=coverImg(p);
+  main.style.setProperty("--brand", col);
+  const stat=(v,l)=>`<div class="stat"><p class="v">${esc(v||"—")}</p><p class="l">${l}</p></div>`;
+  const tabs=activeTabs(p);
+  const pills=tabs.map(t=>`<button class="pill ${st.tab===t.key?"on":""}" data-tab="${t.key}">
+      <i class="ti ${t.icon}"></i><span>${esc(t.tab)}</span>${t.count>1?`<span class="dot">${t.count}</span>`:""}</button>`).join("");
+
+  main.innerHTML=`
+    <div class="hero">
+      ${hero?`<div class="heroimg" style="background-image:url('${esc(hero)}')"></div><div class="grad"></div>`
+            :`<div class="heroph"><i class="ti ti-building-skyscraper"></i></div>`}
+      <div class="price">${(p.pr&&p.pr.trim())
+        ? `<p class="lab">A PARTIR DE</p><p class="v">R$ ${esc(p.pr)}</p>${(p.m2&&p.m2.trim())?`<p class="pm" style="color:${col}">R$ ${esc(p.m2)}/m²</p>`:""}`
+        : `<p class="v" style="font-size:15px;font-weight:500">Valores sob consulta</p>`}</div>
+      <div class="info">
+        <span class="badge" style="background:${stColor(p.st)}">${esc((p.st||"").toUpperCase())}</span>
+        <p class="co" style="color:${col}">${esc(p.co)}</p>
+        <p class="nm">${esc(p.n)}</p>
+        ${p.l?`<p class="li">${esc(p.l)}</p>`:""}
+        <p class="loc"><i class="ti ti-map-pin" style="color:${col}"></i> ${esc(p.cid)} · ${esc(p.end)}</p>
+      </div>
+    </div>
+    <div class="stats">${stat(p.t,"TORRES")}${stat(p.a,"ANDARES")}${stat(p.ap,"APTOS")}${stat(p.e,"ENTREGA")}</div>
+    <div class="body">
+      <div class="pills">${pills}</div>
+      <div id="viewer">${renderViewer(p)}</div>
+    </div>`;
+
+  main.querySelectorAll("[data-tab]").forEach(el=>el.addEventListener("click",()=>setTab(el.getAttribute("data-tab"))));
+  bindViewer(p);
+}
+
+function setTab(key){
+  st.tab=key;
+  const p=st.items[st.i];
+  main.querySelectorAll("[data-tab]").forEach(el=>el.classList.toggle("on", el.getAttribute("data-tab")===key));
+  const v=$("#viewer");
+  v.innerHTML=renderViewer(p);
+  v.classList.remove("vfade"); void v.offsetWidth; v.classList.add("vfade");
+  bindViewer(p);
+}
+
+
+function bindViewer(p){
+  const v=$("#viewer"); if(!v) return;
+  // image gallery -> lightbox
+  const cat=catByKey(st.tab);
+  if(cat && cat.kind==="image"){
+    const mats=matsOf(p,st.tab).map(m=>({type:"image",url:toCdn(m.url),name:p.n+(m.name?" — "+m.name:"")}));
+    v.querySelectorAll("[data-img]").forEach(el=>el.addEventListener("click",()=>openLightbox(mats,+el.getAttribute("data-img"))));
+  }
+  // extra videos -> open in lightbox
+  v.querySelectorAll("[data-vid]").forEach(el=>el.addEventListener("click",()=>openLightbox([{type:"video",url:el.getAttribute("data-vid"),name:p.n}],0)));
+  // copiar link
+  v.querySelectorAll("[data-copy]").forEach(el=>el.addEventListener("click",e=>{ e.preventDefault(); copyText(el.getAttribute("data-copy")); }));
+  // encaminhar no WhatsApp (arquivo no celular, link no PC)
+  v.querySelectorAll("[data-su]").forEach(el=>el.addEventListener("click",e=>{ e.preventDefault(); doShare(el.getAttribute("data-su"), el.getAttribute("data-st"), el.getAttribute("data-sf")==="1"); }));
+  // pdf fullscreen handled by link (new tab)
+}
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+function openLightbox(list, idx){
+  st.lb={list, idx};
+  renderLightbox(); $("#lightbox").classList.add("show");
+}
+function renderLightbox(){
+  const {list,idx}=st.lb; if(!list.length) return;
+  const m=list[idx], stage=$("#lbStage");
+  stage.innerHTML = m.type==="video"
+    ? `<video src="${esc(m.url)}" controls autoplay playsinline></video>`
+    : `<img src="${esc(m.url)}" alt="${esc(m.name||"")}">`;
+  $("#lbCap").textContent = (m.name||"") + (list.length>1?`  ·  ${idx+1}/${list.length}`:"");
+  $("#lbDownload").href=m.url;
+  $("#lbPrev").style.display=$("#lbNext").style.display=list.length>1?"flex":"none";
+}
+function lbMove(d){ const n=st.lb.list.length; st.lb.idx=(st.lb.idx+d+n)%n; renderLightbox(); }
+function closeLightbox(){ $("#lightbox").classList.remove("show"); $("#lbStage").innerHTML=""; }
+$("#lbShare").addEventListener("click",()=>{
+  const m=st.lb.list[st.lb.idx]; if(!m) return;
+  const text=`${m.name||""}\n${m.url}`.trim();
+  doShare(m.url, text, m.type==="image");
+});
+$("#lbClose").addEventListener("click",closeLightbox);
+$("#lbPrev").addEventListener("click",()=>lbMove(-1));
+$("#lbNext").addEventListener("click",()=>lbMove(1));
+$("#lightbox").addEventListener("click",e=>{ if(e.target.id==="lightbox") closeLightbox(); });
+document.addEventListener("keydown",e=>{
+  if(!$("#lightbox").classList.contains("show")) return;
+  if(e.key==="Escape") closeLightbox();
+  if(e.key==="ArrowLeft") lbMove(-1);
+  if(e.key==="ArrowRight") lbMove(1);
+});
+
+/* ============================================================
+   ADMIN
+   ============================================================ */
+const overlay=$("#overlay"), modal=$("#modal");
+function openOverlay(){ overlay.classList.add("show"); }
+function closeOverlay(){ overlay.classList.remove("show"); modal.innerHTML=""; }
+overlay.addEventListener("click",e=>{ if(e.target===overlay) closeOverlay(); });
+
+$("#adminBtn").addEventListener("click",()=>{ st.isAdmin?openAdminList():openLogin(); });
+
+function openLogin(){
+  modal.classList.add("login-box");
+  modal.innerHTML=`
+    <div class="modal-head"><div class="logo" style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#4a9eff,#7a6cf0);display:flex;align-items:center;justify-content:center"><i class="ti ti-lock" style="color:#fff;font-size:18px"></i></div>
+      <div><p class="ttl">Administrador</p><p class="sub">Acesso restrito · NOX</p></div>
+      <div class="spacer"></div><button class="icon-btn" data-close><i class="ti ti-x"></i></button></div>
+    <div class="modal-body">
+      <div class="field"><label>Usuário</label><input id="logUser" autocomplete="username" placeholder="usuário"></div>
+      <div class="field"><label>Senha</label><input id="logPass" type="password" autocomplete="current-password" placeholder="senha"></div>
+      <p class="err" id="logErr"></p>
+    </div>
+    <div class="modal-foot"><button class="btn-ghost" data-close>Cancelar</button><button class="btn-primary" id="logGo"><i class="ti ti-login-2"></i> Entrar</button></div>`;
+  openOverlay();
+  modal.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",closeOverlay));
+  const go=()=>{
+    const u=$("#logUser").value.trim(), pw=$("#logPass").value;
+    if(u===ADMIN_USER && pw===ADMIN_PASS){ st.isAdmin=true; modal.classList.remove("login-box"); $("#adminBtn").innerHTML='<i class="ti ti-settings"></i>'; toast("Bem-vindo, admin"); openAdminList(); }
+    else { $("#logErr").textContent="Usuário ou senha incorretos."; }
+  };
+  $("#logGo").addEventListener("click",go);
+  $("#logPass").addEventListener("keydown",e=>{ if(e.key==="Enter") go(); });
+  setTimeout(()=>$("#logUser").focus(),50);
+}
+
+function openAdminList(){
+  modal.classList.remove("login-box");
+  const rows=st.items.map(p=>{
+    const img=coverImg(p), nMat=(p.materiais||[]).length;
+    return `<div class="admin-item">
+      <div class="thumb">${img?`<img src="${esc(img)}" alt="">`:`<i class="ti ti-building-skyscraper"></i>`}</div>
+      <div class="ai-meta"><p class="n">${esc(p.n)} <span class="tag" style="background:${brandColor(p.co)}">${esc(p.co)}</span></p>
+        <p class="c">${esc(p.cid)} · ${nMat} ${nMat===1?"material":"materiais"}</p></div>
+      <button class="mini-btn" data-edit="${esc(p.id)}"><i class="ti ti-pencil"></i> editar</button>
+      <button class="mini-btn del" data-del="${esc(p.id)}"><i class="ti ti-trash"></i></button>
+    </div>`;
+  }).join("") || `<p style="color:var(--txt4);text-align:center;padding:30px">Nenhum imóvel. Clique em "Novo imóvel".</p>`;
+
+  const cloudInfo = Store.useFb
+    ? `<b>Firebase conectado.</b> Tudo que você salvar aqui aparece para todos os corretores.`
+    : `Rodando em <b>modo local</b> (salva neste navegador). Para compartilhar com os corretores, cole a config do Firebase em <code>FIREBASE_CONFIG</code> no topo do arquivo.`;
+
+  modal.innerHTML=`
+    <div class="modal-head"><div class="logo" style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#4a9eff,#7a6cf0);display:flex;align-items:center;justify-content:center"><i class="ti ti-settings" style="color:#fff;font-size:18px"></i></div>
+      <div><p class="ttl">Painel do Administrador</p><p class="sub">${st.items.length} imóveis cadastrados</p></div>
+      <div class="spacer"></div><button class="icon-btn" data-close><i class="ti ti-x"></i></button></div>
+    <div class="modal-body">
+      <div class="config-note">${cloudInfo}</div>
+      <div class="admin-bar">
+        <button class="btn-primary" id="newProd"><i class="ti ti-plus"></i> Novo imóvel</button>
+        <button class="btn-ghost" id="exportBtn"><i class="ti ti-download"></i> Exportar JSON</button>
+        <button class="btn-ghost" id="importBtn"><i class="ti ti-upload"></i> Importar JSON</button>
+        <input type="file" id="importFile" accept="application/json" style="display:none">
+      </div>
+      <div class="admin-list">${rows}</div>
+    </div>
+    <div class="modal-foot"><button class="btn-ghost" id="logout"><i class="ti ti-logout"></i> Sair</button><button class="btn-primary" data-close>Fechar</button></div>`;
+  openOverlay();
+  modal.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",closeOverlay));
+  $("#logout").addEventListener("click",()=>{ st.isAdmin=false; $("#adminBtn").innerHTML='<i class="ti ti-lock"></i>'; closeOverlay(); toast("Sessão encerrada"); });
+  $("#newProd").addEventListener("click",()=>openProductForm(null));
+  modal.querySelectorAll("[data-edit]").forEach(b=>b.addEventListener("click",()=>openProductForm(b.getAttribute("data-edit"))));
+  modal.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",async()=>{
+    const id=b.getAttribute("data-del"), p=st.items.find(x=>x.id===id);
+    if(!confirm(`Excluir "${p?.n}"? Esta ação não pode ser desfeita.`)) return;
+    await Store.remove(id); await reload(); openAdminList(); toast("Imóvel excluído","ti-trash");
+  }));
+  $("#exportBtn").addEventListener("click",exportJSON);
+  $("#importBtn").addEventListener("click",()=>$("#importFile").click());
+  $("#importFile").addEventListener("change",importJSON);
+}
+
+let formDraft=null;
+function openProductForm(id){
+  const editing = id ? st.items.find(p=>p.id===id) : null;
+  formDraft = editing ? JSON.parse(JSON.stringify(editing)) : {
+    co:"SANTER",n:"",l:"",cid:"",end:"",pr:"",m2:"",st:"Em construção",t:"",a:"",ap:"",e:"",
+    tip:[["",""]],dif:[""],resumo:"",capa:"",materiais:[],ordem:st.items.length
+  };
+  renderProductForm(editing);
+}
+
+function renderProductForm(editing){
+  const d=formDraft;
+  const brandOpts=["SANTER","ROTTAS","STEIN","TORRES"].concat(d.co&&!BRANDS.includes(d.co)?[d.co]:[])
+    .map(b=>`<option value="${esc(b)}" ${d.co===b?"selected":""}>${esc(b)}</option>`).join("");
+  const stOpts=["Em construção","Lançamento","Pronto para morar"].map(s=>`<option ${d.st===s?"selected":""}>${esc(s)}</option>`).join("");
+
+  const tipRows=d.tip.map((t,i)=>`<div class="le-row">
+      <input data-tip-a="${i}" placeholder="Área (ex: 68,72)" value="${esc(t[0])}">
+      <input data-tip-d="${i}" placeholder="Descrição (ex: Suíte + 1 dorm)" value="${esc(t[1])}">
+      <button class="mini-btn del" data-tip-del="${i}"><i class="ti ti-x"></i></button></div>`).join("");
+  const difRows=d.dif.map((x,i)=>`<div class="le-row">
+      <input data-dif="${i}" placeholder="Diferencial" value="${esc(x)}">
+      <button class="mini-btn del" data-dif-del="${i}"><i class="ti ti-x"></i></button></div>`).join("");
+
+  const matRows=(d.materiais||[]).map((m,i)=>{
+    const c=catByKey(m.cat);
+    return `<div class="mat-row">
+      <div class="mi"><i class="ti ${c?c.icon:"ti-file"}"></i></div>
+      <div class="mm"><div class="nn">${esc(m.name||"(sem nome)")}</div><div class="uu">${esc(m.url)}</div></div>
+      <span class="cat">${esc(c?c.tab:m.cat)}</span>
+      <button class="mini-btn del" data-mat-del="${i}"><i class="ti ti-trash"></i></button></div>`;
+  }).join("") || `<p style="font-size:12px;color:var(--txt5);margin:8px 0">Nenhum material ainda. Adicione abaixo.</p>`;
+
+  const catOpts=CATEGORIES.map(c=>`<option value="${c.key}">${esc(c.tab)}</option>`).join("");
+  const imgMats=(d.materiais||[]).filter(m=>{ const c=catByKey(m.cat); return c && c.kind==="image"; });
+  const coverOpts=`<option value="">Primeira imagem (automático)</option>`+
+    imgMats.map(m=>`<option value="${esc(m.url)}" ${d.capa===m.url?"selected":""}>${esc(m.name||m.url)}</option>`).join("");
+
+  modal.innerHTML=`
+    <div class="modal-head"><button class="icon-btn" id="backList"><i class="ti ti-arrow-left"></i></button>
+      <div><p class="ttl">${editing?"Editar imóvel":"Novo imóvel"}</p><p class="sub">${editing?esc(editing.n):"Preencha os dados e anexe os materiais"}</p></div>
+      <div class="spacer"></div><button class="icon-btn" data-close><i class="ti ti-x"></i></button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field"><label>Empreendimento *</label><input id="f_n" value="${esc(d.n)}" placeholder="Ex: Orla da Barra"></div>
+        <div class="field"><label>Construtora</label><select id="f_co">${brandOpts}<option value="__new">+ Nova construtora…</option></select></div>
+        <div class="field full" id="newCoWrap" style="display:none"><label>Nome da nova construtora</label><input id="f_co_new" placeholder="Ex: HORIZONTE"></div>
+        <div class="field"><label>Linha / Selo</label><input id="f_l" value="${esc(d.l)}" placeholder="Ex: Santer Prime"></div>
+        <div class="field"><label>Status</label><select id="f_st">${stOpts}</select></div>
+        <div class="field"><label>Cidade *</label><input id="f_cid" value="${esc(d.cid)}" placeholder="Ex: Barra Velha, SC"></div>
+        <div class="field"><label>Endereço</label><input id="f_end" value="${esc(d.end)}" placeholder="Rua, número"></div>
+        <div class="field"><label>Preço a partir de (R$)</label><input id="f_pr" value="${esc(d.pr)}" placeholder="853.007"></div>
+        <div class="field"><label>Valor do m² (R$)</label><input id="f_m2" value="${esc(d.m2)}" placeholder="13.028"></div>
+        <div class="field"><label>Torres</label><input id="f_t" value="${esc(d.t)}" placeholder="2"></div>
+        <div class="field"><label>Andares</label><input id="f_a" value="${esc(d.a)}" placeholder="30+"></div>
+        <div class="field"><label>Apartamentos</label><input id="f_ap" value="${esc(d.ap)}" placeholder="88"></div>
+        <div class="field"><label>Entrega</label><input id="f_e" value="${esc(d.e)}" placeholder="Dez/29"></div>
+        <div class="field full"><label>Resumo / descrição</label><textarea id="f_resumo" placeholder="Texto livre que aparece na aba Resumo. Deixe vazio para gerar automático.">${esc(d.resumo||"")}</textarea></div>
+      </div>
+
+      <div class="mat-section">
+        <p class="section-label" style="margin:0 0 4px">TIPOLOGIAS (área m² · descrição)</p>
+        <div class="list-editor" id="tipEditor">${tipRows}</div>
+        <button class="mini-btn" id="addTip"><i class="ti ti-plus"></i> tipologia</button>
+      </div>
+
+      <div class="mat-section">
+        <p class="section-label" style="margin:0 0 4px">DIFERENCIAIS</p>
+        <div class="list-editor" id="difEditor">${difRows}</div>
+        <button class="mini-btn" id="addDif"><i class="ti ti-plus"></i> diferencial</button>
+      </div>
+
+      <div class="mat-section">
+        <p class="section-label" style="margin:0 0 4px">MATERIAIS (fotos, PDFs, vídeos, tabela)</p>
+        <div class="config-note" style="margin:8px 0">Cole o link do <b>GitHub</b> do arquivo (ou link do YouTube/Maps). O sistema converte para CDN automaticamente para abrir embutido. Ex: <code>https://github.com/usuario/repo/blob/main/marine/folder.pdf</code></div>
+        <div class="mat-list" id="matList">${matRows}</div>
+        <div class="add-mat">
+          <div class="field"><label>Tipo</label><select id="m_cat">${catOpts}</select></div>
+          <div class="field"><label>Nome</label><input id="m_name" placeholder="Ex: Book de apresentação"></div>
+          <div class="field"><label>Link (GitHub / YouTube / Maps)</label><input id="m_url" placeholder="https://github.com/..."></div>
+          <button class="mini-btn" id="addMat" style="background:var(--accent);color:#0a1622;font-weight:600"><i class="ti ti-plus"></i> add</button>
+        </div>
+        <div class="field" style="margin-top:8px">
+          <label><i class="ti ti-download" style="font-size:13px;vertical-align:-2px"></i> Link de download — opcional (só p/ vídeo do YouTube que você queira deixar baixável)</label>
+          <input id="m_dl" placeholder="https://github.com/.../video.mp4 — deixe vazio se não precisar">
+        </div>
+        <div class="field" style="margin-top:14px;border-top:1px solid var(--line);padding-top:14px">
+          <label><i class="ti ti-star" style="font-size:13px;vertical-align:-2px"></i> Foto de capa (retângulo do topo)</label>
+          <select id="f_capa">${coverOpts}</select>
+          <div class="hint">Escolhe qual imagem aparece como capa do empreendimento (topo e miniatura da lista). Adicione imagens primeiro para poder escolher.</div>
+        </div>
+      </div>
+      <p class="err" id="formErr"></p>
+    </div>
+    <div class="modal-foot"><button class="btn-ghost" id="backList2">Voltar</button><button class="btn-primary" id="saveProd"><i class="ti ti-device-floppy"></i> Salvar imóvel</button></div>`;
+
+  // bindings
+  modal.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",closeOverlay));
+  $("#backList").addEventListener("click",openAdminList);
+  $("#backList2").addEventListener("click",openAdminList);
+
+  $("#f_co").addEventListener("change",e=>{ $("#newCoWrap").style.display = e.target.value==="__new"?"block":"none"; });
+
+  // tipologias
+  $("#addTip").addEventListener("click",()=>{ syncDraft(); d.tip.push(["",""]); renderProductForm(editing); });
+  modal.querySelectorAll("[data-tip-del]").forEach(b=>b.addEventListener("click",()=>{ syncDraft(); d.tip.splice(+b.getAttribute("data-tip-del"),1); if(!d.tip.length)d.tip=[["",""]]; renderProductForm(editing); }));
+  // diferenciais
+  $("#addDif").addEventListener("click",()=>{ syncDraft(); d.dif.push(""); renderProductForm(editing); });
+  modal.querySelectorAll("[data-dif-del]").forEach(b=>b.addEventListener("click",()=>{ syncDraft(); d.dif.splice(+b.getAttribute("data-dif-del"),1); if(!d.dif.length)d.dif=[""]; renderProductForm(editing); }));
+  // materiais
+  $("#addMat").addEventListener("click",()=>{
+    const cat=$("#m_cat").value, name=$("#m_name").value.trim(), url=$("#m_url").value.trim(), dl=$("#m_dl").value.trim();
+    if(!url){ $("#formErr").textContent="Cole o link do material."; return; }
+    syncDraft();
+    const item={cat,name:name||catByKey(cat).tab,url};
+    if(dl) item.dl=dl;
+    d.materiais.push(item); $("#formErr").textContent=""; renderProductForm(editing);
+  });
+  modal.querySelectorAll("[data-mat-del]").forEach(b=>b.addEventListener("click",()=>{ syncDraft(); d.materiais.splice(+b.getAttribute("data-mat-del"),1); renderProductForm(editing); }));
+
+  $("#saveProd").addEventListener("click",saveProduct.bind(null,editing));
+}
+
+function syncDraft(){
+  const d=formDraft; if(!$("#f_n")) return;
+  d.n=$("#f_n").value.trim();
+  let co=$("#f_co").value;
+  if(co==="__new"){ const nv=$("#f_co_new").value.trim().toUpperCase(); if(nv) co=nv; else co="SANTER"; }
+  d.co=co;
+  d.l=$("#f_l").value.trim(); d.st=$("#f_st").value;
+  d.cid=$("#f_cid").value.trim(); d.end=$("#f_end").value.trim();
+  d.pr=$("#f_pr").value.trim(); d.m2=$("#f_m2").value.trim();
+  d.t=$("#f_t").value.trim(); d.a=$("#f_a").value.trim(); d.ap=$("#f_ap").value.trim(); d.e=$("#f_e").value.trim();
+  d.resumo=$("#f_resumo").value;
+  if($("#f_capa")) d.capa=$("#f_capa").value||"";
+  d.tip=Array.from(modal.querySelectorAll("[data-tip-a]")).map(el=>{
+    const i=el.getAttribute("data-tip-a"); return [el.value.trim(), (modal.querySelector(`[data-tip-d="${i}"]`)||{}).value?.trim()||""];
+  }).filter(t=>t[0]||t[1]);
+  d.dif=Array.from(modal.querySelectorAll("[data-dif]")).map(el=>el.value.trim()).filter(Boolean);
+}
+
+async function saveProduct(editing){
+  syncDraft();
+  const d=formDraft;
+  if(!d.n){ $("#formErr").textContent="Informe o nome do empreendimento."; return; }
+  if(!d.cid){ $("#formErr").textContent="Informe a cidade."; return; }
+  if(!d.tip.length) d.tip=[["",""]];
+  const btn=$("#saveProd"); btn.disabled=true; btn.innerHTML='<i class="ti ti-loader-2"></i> Salvando...';
+  try{
+    await Store.save(d);
+    await reload();
+    // selecionar o imóvel salvo
+    const idx=st.items.findIndex(x=>x.n===d.n && x.cid===d.cid);
+    if(idx>=0){ st.i=idx; st.tab="resumo"; }
+    renderSide(); renderMain();
+    openAdminList();
+    toast(editing?"Imóvel atualizado":"Imóvel cadastrado");
+  }catch(e){ console.error(e); $("#formErr").textContent="Erro ao salvar: "+e.message; btn.disabled=false; btn.innerHTML='<i class="ti ti-device-floppy"></i> Salvar imóvel'; }
+}
+
+/* export / import */
+function exportJSON(){
+  const data=JSON.stringify(st.items,null,2);
+  const blob=new Blob([data],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download="materiais-alumma-catalogo.json"; a.click();
+  toast("Catálogo exportado","ti-download");
+}
+function importJSON(e){
+  const file=e.target.files[0]; if(!file) return;
+  const r=new FileReader();
+  r.onload=async()=>{
+    try{
+      const arr=JSON.parse(r.result);
+      if(!Array.isArray(arr)) throw new Error("Formato inválido");
+      if(!confirm(`Importar ${arr.length} imóveis? Eles serão adicionados ao catálogo atual.`)) return;
+      for(const it of arr){ delete it.id; await Store.save(it); }
+      await reload(); openAdminList(); toast("Catálogo importado");
+    }catch(err){ alert("Erro ao importar: "+err.message); }
+  };
+  r.readAsText(file); e.target.value="";
+}
+
+/* ============================================================
+   SIDEBAR MOBILE
+   ============================================================ */
+function openSide(){ side.classList.add("open"); $("#scrim").classList.add("show"); }
+function closeSide(){ side.classList.remove("open"); $("#scrim").classList.remove("show"); }
+$("#sideToggle").addEventListener("click",()=>side.classList.contains("open")?closeSide():openSide());
+$("#scrim").addEventListener("click",closeSide);
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+async function reload(){ st.items=await Store.getAll(); }
+
+async function boot(){
+  const tag=$("#cloudTag"), txt=$("#cloudTxt");
+  try{
+    await Store.init();
+    if(Store.useFb){ tag.classList.add("on"); txt.textContent="Firebase"; }
+    else { txt.textContent="Local"; }
+  }catch(e){ console.warn(e); txt.textContent="Local"; }
+
+  try{
+    st.items = await Store.seedIfEmpty(SEED);
+  }catch(e){
+    console.warn("Falha ao carregar/semear o catálogo — usando dados em memória.", e);
+    st.items = SEED.map((p,i)=>({...p, id:"mem_"+i}));
+  }
+  if(!Array.isArray(st.items) || !st.items.length){
+    st.items = SEED.map((p,i)=>({...p, id:"mem_"+i}));
+  }
+  renderSide(); renderMain();
+}
+boot().catch(e=>{
+  console.error("Erro no boot — render de emergência.", e);
+  st.items = SEED.map((p,i)=>({...p, id:"mem_"+i}));
+  try{ renderSide(); renderMain(); }catch(_){}
+});
+
+})();
+</script>
+</body>
+</html>
