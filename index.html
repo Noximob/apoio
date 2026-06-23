@@ -261,6 +261,17 @@ input,select,textarea{font-family:inherit}
 .mat-row .cat{font-size:9px;letter-spacing:.5px;color:var(--txt4);border:1px solid var(--line);padding:2px 7px;border-radius:20px}
 .add-mat{display:grid;grid-template-columns:130px 1fr 1fr auto;gap:8px;margin-top:12px;align-items:end}
 .add-mat .field{margin:0}
+.add-mat-grid{display:grid;grid-template-columns:160px 1fr;gap:10px;margin-top:10px}
+.add-mat-grid .field{margin:0}
+.upload-row{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.up-main{background:var(--accent);color:#0a1622;font-weight:600;padding:10px 16px}
+.up-or{font-size:11px;color:var(--txt5)}
+.up-link{flex:1;min-width:160px;background:var(--bg4);border:1px solid var(--line);border-radius:9px;padding:9px 11px;color:var(--txt);font-size:12px;outline:none}
+.up-link:focus{border-color:var(--accent)}
+.up-progress{margin-top:10px;font-size:12px;color:var(--accent);display:none;align-items:center;gap:10px}
+.up-progress.show{display:flex}
+.up-progress .bar{flex:1;max-width:260px;height:7px;background:var(--bg4);border-radius:4px;overflow:hidden}
+.up-progress .bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .2s}
 .mini-btn{padding:9px 13px;border-radius:9px;font-size:12px;display:inline-flex;align-items:center;gap:6px}
 .mini-btn.del{color:var(--danger)}
 .mini-btn.del:hover{background:rgba(240,113,107,.1)}
@@ -431,9 +442,24 @@ const Store = (function(){
   async function initFirebase(){
     await loadScript("https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js");
     await loadScript("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js");
+    await loadScript("https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js");
     firebase.initializeApp(FIREBASE_CONFIG);
     db = firebase.firestore();
     useFb = true;
+  }
+
+  // Upload de arquivo pro Storage; retorna a URL de download. onProgress recebe 0-100.
+  async function uploadFile(path, file, onProgress){
+    if(!useFb || !firebase.storage) throw new Error("Storage indisponível (Firebase não conectado).");
+    const ref = firebase.storage().ref(path);
+    const task = ref.put(file);
+    return new Promise((resolve, reject)=>{
+      task.on("state_changed",
+        s=>{ if(onProgress) onProgress(Math.round(s.bytesTransferred / s.totalBytes * 100)); },
+        err=>reject(err),
+        async ()=>{ try{ resolve(await task.snapshot.ref.getDownloadURL()); }catch(e){ reject(e); } }
+      );
+    });
   }
 
   async function init(){
@@ -523,7 +549,7 @@ const Store = (function(){
     return getCon();
   }
 
-  return {init, getAll, save, remove, seedIfEmpty, getCon, saveCon, removeCon, seedConIfEmpty, get useFb(){return useFb;}, hasConfig};
+  return {init, getAll, save, remove, seedIfEmpty, getCon, saveCon, removeCon, seedConIfEmpty, uploadFile, get useFb(){return useFb;}, hasConfig};
 })();
 
 /* ============================================================
@@ -1160,18 +1186,24 @@ function renderProductForm(editing){
       </div>
 
       <div class="mat-section">
-        <p class="section-label" style="margin:0 0 4px">MATERIAIS (fotos, PDFs, vídeos, tabela)</p>
-        <div class="config-note" style="margin:8px 0">Cole o link do <b>GitHub</b> do arquivo (ou link do YouTube/Maps). O sistema converte para CDN automaticamente para abrir embutido. Ex: <code>https://github.com/usuario/repo/blob/main/marine/folder.pdf</code></div>
+        <p class="section-label" style="margin:0 0 4px">MATERIAIS (fotos, PDFs, vídeos, links)</p>
+        <div class="config-note" style="margin:8px 0">Escolha o <b>Tipo</b> e um <b>Nome</b>, depois <b>envie o arquivo do computador</b> 📎 — ele sobe pro Firebase e o link é criado sozinho. Ou <b>cole um link</b> (Maps, página externa, etc.).</div>
         <div class="mat-list" id="matList">${matRows}</div>
-        <div class="add-mat">
+        <div class="add-mat-grid">
           <div class="field"><label>Tipo</label><select id="m_cat">${catOpts}</select></div>
-          <div class="field"><label>Nome</label><input id="m_name" placeholder="Ex: Book de apresentação"></div>
-          <div class="field"><label>Link (GitHub / YouTube / Maps)</label><input id="m_url" placeholder="https://github.com/..."></div>
-          <button class="mini-btn" id="addMat" style="background:var(--accent);color:#0a1622;font-weight:600"><i class="ti ti-plus"></i> add</button>
+          <div class="field"><label>Nome (opcional)</label><input id="m_name" placeholder="Ex: Book de apresentação"></div>
         </div>
-        <div class="field" style="margin-top:8px">
-          <label><i class="ti ti-download" style="font-size:13px;vertical-align:-2px"></i> Link de download — opcional (só p/ vídeo do YouTube que você queira deixar baixável)</label>
-          <input id="m_dl" placeholder="https://github.com/.../video.mp4 — deixe vazio se não precisar">
+        <input type="file" id="m_file" style="display:none">
+        <div class="upload-row">
+          <button class="mini-btn up-main" id="m_upload"><i class="ti ti-upload"></i> Enviar arquivo</button>
+          <span class="up-or">— ou —</span>
+          <input id="m_url" class="up-link" placeholder="colar link (Maps / externo)">
+          <button class="mini-btn" id="addMat"><i class="ti ti-plus"></i> add link</button>
+        </div>
+        <div id="upProgress" class="up-progress"></div>
+        <div class="field" style="margin-top:12px">
+          <label><i class="ti ti-download" style="font-size:13px;vertical-align:-2px"></i> Link de download — opcional (só se você colar um link de vídeo e quiser deixá-lo baixável)</label>
+          <input id="m_dl" placeholder="deixe vazio se enviou o arquivo">
         </div>
         <div class="field" style="margin-top:14px;border-top:1px solid var(--line);padding-top:14px">
           <label><i class="ti ti-star" style="font-size:13px;vertical-align:-2px"></i> Foto de capa (retângulo do topo)</label>
@@ -1194,14 +1226,46 @@ function renderProductForm(editing){
   // diferenciais
   $("#addDif").addEventListener("click",()=>{ syncDraft(); d.dif.push(""); renderProductForm(editing); });
   modal.querySelectorAll("[data-dif-del]").forEach(b=>b.addEventListener("click",()=>{ syncDraft(); d.dif.splice(+b.getAttribute("data-dif-del"),1); if(!d.dif.length)d.dif=[""]; renderProductForm(editing); }));
-  // materiais
+  // materiais — colar link
   $("#addMat").addEventListener("click",()=>{
     const cat=$("#m_cat").value, name=$("#m_name").value.trim(), url=$("#m_url").value.trim(), dl=$("#m_dl").value.trim();
-    if(!url){ $("#formErr").textContent="Cole o link do material."; return; }
+    if(!url){ $("#formErr").textContent="Cole o link do material (ou use o botão Enviar arquivo)."; return; }
     syncDraft();
     const item={cat,name:name||catByKey(cat).tab,url};
     if(dl) item.dl=dl;
     d.materiais.push(item); $("#formErr").textContent=""; renderProductForm(editing);
+  });
+  // materiais — enviar arquivo pro Storage
+  $("#m_upload").addEventListener("click",()=>{
+    if(!Store.useFb){ $("#formErr").textContent="O upload precisa do Firebase conectado."; return; }
+    $("#m_file").click();
+  });
+  $("#m_file").addEventListener("change", async (e)=>{
+    const file=e.target.files[0]; if(!file) return;
+    const cat=$("#m_cat").value;
+    const name=$("#m_name").value.trim() || file.name.replace(/\.[^.]+$/,"");
+    syncDraft();
+    const key = (editing && editing.id) ? editing.id : ("novo_"+Date.now());
+    const safe = file.name.replace(/[^\w.\-]+/g,"_");
+    const path = `imoveis/${key}/${cat}/${Date.now()}_${safe}`;
+    const prog=$("#upProgress");
+    prog.classList.add("show");
+    prog.innerHTML=`<i class="ti ti-loader-2"></i><span>Enviando ${esc(file.name)}…</span><div class="bar"><i></i></div><span id="upPct">0%</span>`;
+    $("#m_upload").disabled=true; $("#formErr").textContent="";
+    try{
+      const url = await Store.uploadFile(path, file, pct=>{
+        const b=prog.querySelector(".bar i"); if(b) b.style.width=pct+"%";
+        const p=$("#upPct"); if(p) p.textContent=pct+"%";
+      });
+      d.materiais.push({cat, name, url});
+      toast("Arquivo enviado!","ti-cloud-check");
+      renderProductForm(editing);
+    }catch(err){
+      console.error(err); prog.classList.remove("show");
+      $("#formErr").textContent="Erro no upload: "+(err && err.message ? err.message : err);
+      $("#m_upload").disabled=false;
+    }
+    e.target.value="";
   });
   modal.querySelectorAll("[data-mat-del]").forEach(b=>b.addEventListener("click",()=>{ syncDraft(); d.materiais.splice(+b.getAttribute("data-mat-del"),1); renderProductForm(editing); }));
 
