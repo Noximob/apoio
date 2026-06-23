@@ -697,6 +697,7 @@ function renderSide(){
 function activeTabs(p){
   const tabs=[{key:"resumo",tab:"Resumo",icon:"ti-list-details"}];
   CATEGORIES.forEach(c=>{ if(hasMat(p,c.key)) tabs.push({key:c.key,tab:c.tab,icon:c.icon,count:matsOf(p,c.key).length}); });
+  tabs.push({key:"calculadora",tab:"Calculadora",icon:"ti-calculator"});
   tabs.push({key:"local",tab:"Localização",icon:"ti-map-pin"});
   return tabs;
 }
@@ -722,6 +723,15 @@ function renderViewer(p){
     return `<p class="lead">${esc(lead)}</p>
       ${tips?`<p class="section-label">TIPOLOGIAS</p><div class="tip-grid">${tips}</div>`:""}
       ${difs?`<p class="section-label">DIFERENCIAIS</p><div class="dif-box">${difs}</div>`:""}`;
+  }
+
+  if(st.tab==="calculadora"){
+    return `<div class="link-card">
+      <div class="ic"><i class="ti ti-calculator"></i></div>
+      <div class="t">Calculadora de Fluxo de Pagamento</div>
+      <div class="s">Ferramenta em desenvolvimento. Em breve o corretor poderá simular aqui o fluxo de pagamento do empreendimento — entrada, parcelas, balões e financiamento — direto na apresentação.</div>
+      <span style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--accent);border:1px solid rgba(154,108,240,.4);padding:7px 15px;border-radius:20px"><i class="ti ti-clock"></i> Em breve</span>
+    </div>`;
   }
 
   if(st.tab==="local"){
