@@ -353,12 +353,12 @@ input,select,textarea{font-family:inherit}
    Enquanto estiver vazio, o app roda 100% local (localStorage).
    ============================================================ */
 const FIREBASE_CONFIG = {
-  // apiKey: "...",
-  // authDomain: "...",
-  // projectId: "...",
-  // storageBucket: "...",
-  // messagingSenderId: "...",
-  // appId: "..."
+  apiKey: "AIzaSyBRiSro90kafN-1sKwB-vZPI43-RX63_Xg",
+  authDomain: "apoio-nox.firebaseapp.com",
+  projectId: "apoio-nox",
+  storageBucket: "apoio-nox.firebasestorage.app",
+  messagingSenderId: "110646960536",
+  appId: "1:110646960536:web:422f238d678a1286a48bed"
 };
 const ADMIN_USER = "nox";
 const ADMIN_PASS = "nox2025";
@@ -461,18 +461,21 @@ const Store = (function(){
     catch(e){ console.warn("localStorage indisponível — dados mantidos só nesta sessão.", e); }
   }
 
+  // Firestore não aceita array-dentro-de-array (tipologias): guarda como texto JSON
+  function fbEncode(item){ const d={...item}; delete d.id; if(Array.isArray(d.tip)) d.tip=JSON.stringify(d.tip); return d; }
+  function fbDecode(d){ const x={...d}; if(typeof x.tip==="string"){ try{ x.tip=JSON.parse(x.tip); }catch(e){ x.tip=[]; } } return x; }
+
   async function getAll(){
     if(useFb){
-      const snap = await db.collection("imoveis").orderBy("ordem","asc").get();
-      return snap.docs.map(d=>({id:d.id, ...d.data()}));
+      const snap = await db.collection("imoveis").get();
+      return snap.docs.map(d=>fbDecode({id:d.id, ...d.data()})).sort((a,b)=>(a.ordem||0)-(b.ordem||0));
     }
     return lsGet().sort((a,b)=>(a.ordem||0)-(b.ordem||0));
   }
   async function save(item){
     if(useFb){
       const id = item.id || db.collection("imoveis").doc().id;
-      const data = {...item}; delete data.id;
-      await db.collection("imoveis").doc(id).set(data, {merge:true});
+      await db.collection("imoveis").doc(id).set(fbEncode(item), {merge:true});
       return id;
     }
     const arr = lsGet();
@@ -500,7 +503,7 @@ const Store = (function(){
   }
   function conSet(arr){ conMem=arr; try{ localStorage.setItem(CON_KEY, JSON.stringify(arr)); }catch(e){ console.warn("localStorage indisponível (construtoras).", e); } }
   async function getCon(){
-    if(useFb){ const s=await db.collection("construtoras").orderBy("ordem","asc").get(); return s.docs.map(d=>({id:d.id, ...d.data()})); }
+    if(useFb){ const s=await db.collection("construtoras").get(); return s.docs.map(d=>({id:d.id, ...d.data()})).sort((a,b)=>(a.ordem||0)-(b.ordem||0)); }
     return conGet().slice().sort((a,b)=>(a.ordem||0)-(b.ordem||0));
   }
   async function saveCon(item){
